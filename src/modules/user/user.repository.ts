@@ -7,9 +7,9 @@ export class UserRepository {
   constructor(private readonly prismaClient: PrismaClient) {}
 
   async createUser(createUserDto: CreateUserDto) {
-    await this.prismaClient.user.create({
+    return await this.prismaClient.user.create({
       data: {
-        levelAccess: createUserDto.levelAccess,
+        role: createUserDto.role,
         name: createUserDto.name,
         email: createUserDto.email,
         password: createUserDto.password,
