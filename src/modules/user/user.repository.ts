@@ -38,4 +38,8 @@ export class UserRepository {
       throw new InternalServerErrorException(EErrors.INTERNAL_ERROR);
     }
   }
+
+  async findAllUsers(where: any) {
+    return await this.prisma.user.findMany({ where });
+  }
 }

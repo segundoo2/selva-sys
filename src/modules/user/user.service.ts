@@ -8,10 +8,16 @@ export class UserService {
 
   async createUser(createUserDto: CreateUserDto) {
     try {
-      const newUserCreate = await this.userRepository.createUser(createUserDto);
-      return newUserCreate;
+      return await this.userRepository.createUser(createUserDto);
     } catch (error) {
       throw error;
     }
+  }
+
+  async findAllUsers(email: string) {
+    const where = email
+      ? { email: { contains: email, mode: 'insensitive' } }
+      : {};
+    return await this.userRepository.findAllUsers(where);
   }
 }

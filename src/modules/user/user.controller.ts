@@ -1,4 +1,4 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, Get, Patch, Post, Query } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 
@@ -15,4 +15,11 @@ export class UserController {
       throw error;
     }
   }
+
+  @Get()
+  async findAllUsers(@Query('email') email?: string) {
+    return await this.userService.findAllUsers(email);
+  }
+
+  @Patch('/updatedata/:id')
 }
