@@ -13,6 +13,6 @@ export class CreateUserDto {
   @IsEmail({}, { message: ECrudValidation.EMAIL_INVALID })
   email: string;
 
-  @MinLength(6, { message: ECrudValidation.PASSWORD_LENGHT })
+  @MinLength(6, { message: ECrudValidation.PASSWORD_LENGTH })
   password: string;
 }

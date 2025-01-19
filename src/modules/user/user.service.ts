@@ -1,6 +1,8 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { UserRepository } from './user.repository';
 import { CreateUserDto } from './dto/create-user.dto';
+import { UpdateUserDto } from './dto/update.dto';
+import { EErrors } from 'src/enum/errors.enum';
 
 @Injectable()
 export class UserService {
@@ -8,7 +10,7 @@ export class UserService {
 
   async createUser(createUserDto: CreateUserDto) {
     try {
-      return await this.userRepository.createUser(createUserDto);
+      return this.userRepository.createUser(createUserDto);
     } catch (error) {
       throw error;
     }
@@ -18,6 +20,16 @@ export class UserService {
     const where = email
       ? { email: { contains: email, mode: 'insensitive' } }
       : {};
-    return await this.userRepository.findAllUsers(where);
+    return this.userRepository.findAllUsers(where);
+  }
+
+  async updateUser(id: string, updateUserDto: UpdateUserDto) {
+    const user = this.userRepository.findUserById(id);
+
+    if (!user) {
+      throw new NotFoundException(EErrors.USER_NOT_FOUND);
+    }
+
+    return this.userRepository.updateUser(id, updateUserDto);
   }
 }

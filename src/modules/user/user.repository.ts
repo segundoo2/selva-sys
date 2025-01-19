@@ -7,6 +7,7 @@ import {
 } from '@nestjs/common';
 import { ECrudValidation } from 'src/enum/crud-validation.enum';
 import { EErrors } from 'src/enum/errors.enum';
+import { UpdateUserDto } from './dto/update.dto';
 
 @Injectable()
 export class UserRepository {
@@ -22,7 +23,7 @@ export class UserRepository {
         throw new ConflictException(ECrudValidation.EMAIL_EXIST);
       }
 
-      return await this.prisma.user.create({
+      return this.prisma.user.create({
         data: {
           role: createUserDto.role,
           name: createUserDto.name,
@@ -34,12 +35,24 @@ export class UserRepository {
       if (error instanceof ConflictException) {
         throw error;
       }
-
       throw new InternalServerErrorException(EErrors.INTERNAL_ERROR);
     }
   }
 
   async findAllUsers(where: any) {
-    return await this.prisma.user.findMany({ where });
+    return this.prisma.user.findMany({ where });
+  }
+
+  async findUserById(id: string) {
+    return this.prisma.user.findUnique({
+      where: { id },
+    });
+  }
+
+  async updateUser(id: string, updateUserDto: UpdateUserDto) {
+    return this.prisma.user.update({
+      where: { id },
+      data: updateUserDto,
+    });
   }
 }
