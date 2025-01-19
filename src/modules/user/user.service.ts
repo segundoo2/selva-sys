@@ -7,7 +7,11 @@ export class UserService {
   constructor(private readonly userRepository: UserRepository) {}
 
   async createUser(createUserDto: CreateUserDto) {
-    const newUserCreate = await this.userRepository.createUser(createUserDto);
-    return newUserCreate;
+    try {
+      const newUserCreate = await this.userRepository.createUser(createUserDto);
+      return newUserCreate;
+    } catch (error) {
+      throw error;
+    }
   }
 }

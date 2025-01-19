@@ -1,18 +1,18 @@
 import { IsEmail, IsIn, IsNotEmpty, MinLength } from 'class-validator';
-import { ECrud } from 'src/enum/crud.enum';
+import { ECrudValidation } from 'src/enum/crud-validation.enum';
 
 export class CreateUserDto {
   @IsIn(['admin', 'diretor', 'secretario', 'tesoureiro', 'instrutor'], {
-    message: ECrud.ROLE_INVALID,
+    message: ECrudValidation.ROLE_INVALID,
   })
   role: 'admin' | 'diretor' | 'secretario' | 'tesoureiro' | 'instrutor';
 
-  @IsNotEmpty({ message: ECrud.EMPTY_FIELD })
+  @IsNotEmpty({ message: ECrudValidation.EMPTY_FIELD })
   name: string;
 
-  @IsEmail({}, { message: ECrud.EMAIL_INVALID })
+  @IsEmail({}, { message: ECrudValidation.EMAIL_INVALID })
   email: string;
 
-  @MinLength(6, { message: ECrud.PASSWORD_LENGHT })
+  @MinLength(6, { message: ECrudValidation.PASSWORD_LENGHT })
   password: string;
 }
