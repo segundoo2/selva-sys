@@ -1,4 +1,13 @@
-import { Body, Controller, Get, Param, Post, Put, Query } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  Put,
+  Query,
+} from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update.dto';
@@ -27,7 +36,21 @@ export class UserController {
     @Param('id') id: string,
     @Body() updateUserDto: UpdateUserDto,
   ) {
-    await this.userService.updateUser(id, updateUserDto);
-    return 'Usuário atualizado com sucesso!';
+    try {
+      await this.userService.updateUser(id, updateUserDto);
+      return 'Usuário atualizado com sucesso!';
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  @Delete('/:id')
+  async deleteUser(@Param('id') id: string) {
+    try {
+      await this.userService.deleteUser(id);
+      return 'Usuário deletado com sucesso!';
+    } catch (error) {
+      throw error;
+    }
   }
 }

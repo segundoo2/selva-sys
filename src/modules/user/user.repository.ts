@@ -4,6 +4,7 @@ import {
   ConflictException,
   Injectable,
   InternalServerErrorException,
+  NotFoundException,
 } from '@nestjs/common';
 import { ECrudValidation } from 'src/enum/crud-validation.enum';
 import { EErrors } from 'src/enum/errors.enum';
@@ -43,16 +44,30 @@ export class UserRepository {
     return this.prisma.user.findMany({ where });
   }
 
-  async findUserById(id: string) {
-    return this.prisma.user.findUnique({
+  async verifyUserExist(id: string) {
+    const user = await this.prisma.user.findUnique({
       where: { id },
     });
+
+    if (!user) {
+      throw new NotFoundException(EErrors.USER_NOT_FOUND);
+    }
   }
 
   async updateUser(id: string, updateUserDto: UpdateUserDto) {
+    await this.verifyUserExist(id);
+
     return this.prisma.user.update({
       where: { id },
       data: updateUserDto,
+    });
+  }
+
+  async deleteUser(id: string) {
+    await this.verifyUserExist(id);
+
+    return await this.prisma.user.delete({
+      where: { id },
     });
   }
 }
