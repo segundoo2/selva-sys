@@ -4,6 +4,7 @@ import {
   Delete,
   Get,
   Param,
+  Patch,
   Post,
   Put,
   Query,
@@ -11,6 +12,7 @@ import {
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update.dto';
+import { ResetPasswordDto } from './dto/resetPassword.dto';
 
 @Controller('user')
 export class UserController {
@@ -39,6 +41,19 @@ export class UserController {
     try {
       await this.userService.updateUser(id, updateUserDto);
       return 'Usuário atualizado com sucesso!';
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  @Patch('/:id')
+  async resetPassword(
+    @Param('id') id: string,
+    @Body() resetPasswordDto: ResetPasswordDto,
+  ) {
+    try {
+      await this.userService.resetPassword(id, resetPasswordDto);
+      return 'Senha atualizada com sucesso!';
     } catch (error) {
       throw error;
     }

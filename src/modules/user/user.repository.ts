@@ -40,8 +40,16 @@ export class UserRepository {
     }
   }
 
-  async findAllUsers(where: any) {
-    return this.prisma.user.findMany({ where });
+  async findAllUsers(where) {
+    return this.prisma.user.findMany({
+      where,
+      select: {
+        id: true,
+        name: true,
+        email: true,
+        role: true,
+      },
+    });
   }
 
   async verifyUserExist(id: string) {
@@ -60,6 +68,15 @@ export class UserRepository {
     return this.prisma.user.update({
       where: { id },
       data: updateUserDto,
+    });
+  }
+
+  async resetPassword(id: string, passwordHashed: string) {
+    await this.verifyUserExist(id);
+
+    return this.prisma.user.update({
+      where: { id },
+      data: { password: passwordHashed },
     });
   }
 
