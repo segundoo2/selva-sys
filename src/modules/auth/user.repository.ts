@@ -21,7 +21,7 @@ export class UserRepository {
   async logout(userId: string) {
     await this.prisma.user.update({
       where: { id: userId },
-      data: { refeshToken: null },
+      data: { refreshToken: null },
     });
   }
 
@@ -29,7 +29,7 @@ export class UserRepository {
     const hashedRefreshToken = await bcrypt.hash(refreshToken, 10);
     await this.prisma.user.update({
       where: { id: userId },
-      data: { refeshToken: hashedRefreshToken },
+      data: { refreshToken: hashedRefreshToken },
     });
   }
 }

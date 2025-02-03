@@ -17,13 +17,17 @@ export class AuthService {
 
   async login(dto: AuthDto) {
     const user = await this.userRepository.findByEmail(dto.email);
+    console.log('Usuário encontrado:', user);
 
-    if (!user || !(await bcrypt.compare(dto.password, user.password))) {
+    const isPasswordValid = await bcrypt.compare(dto.password, user.password);
+    console.log('Senha válida:', isPasswordValid);
+
+    if (!user || !isPasswordValid) {
       throw new UnauthorizedException('Credenciais inválidas');
     }
 
     const tokens = await this.generateTokens(user.id, user.email);
-    await this.refreshToken(user.id, tokens.refreshToken);
+    await this.updateRefreshToken(user.id, tokens.refreshToken);
 
     return tokens;
   }
@@ -31,11 +35,11 @@ export class AuthService {
   async refreshToken(userId: string, refreshToken: string) {
     const user = await this.userRepository.findById(userId);
 
-    if (!user || !user.refeshToken) {
+    if (!user || !user.refreshToken) {
       throw new ForbiddenException('Acesso negado');
     }
 
-    const isValid = await bcrypt.compare(refreshToken, user.refeshToken);
+    const isValid = await bcrypt.compare(refreshToken, user.refreshToken);
     if (!isValid) {
       throw new ForbiddenException('Token inválido');
     }
@@ -54,12 +58,13 @@ export class AuthService {
     const accessToken = this.jwtService.sign({ sub: userId, email });
     const refreshToken = this.jwtService.sign(
       { sub: userId, email },
-      { expiresIn: '30min' },
+      { expiresIn: '1h' },
     );
     return { accessToken, refreshToken };
   }
 
   private async updateRefreshToken(userId: string, refreshToken: string) {
-    return this.userRepository.updateRefreshToken(userId, refreshToken);
+    const hashedRefreshToken = await bcrypt.hash(refreshToken, 10);
+    return this.userRepository.updateRefreshToken(userId, hashedRefreshToken);
   }
 }
