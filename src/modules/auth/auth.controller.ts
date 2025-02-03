@@ -3,6 +3,7 @@ import { AuthService } from './auth.service';
 import { AuthDto } from './dto/auth.dto';
 import { RefreshTokenDto } from './dto/refesh-token.dto';
 import { RefreshGuard } from './guards/refresh.guard';
+import { EMessage } from 'src/enum/message.enum';
 
 @Controller('auth')
 export class AuthController {
@@ -11,7 +12,7 @@ export class AuthController {
   @Post('login')
   async login(@Body() authDto: AuthDto) {
     return {
-      message: 'Seja bem-vindo ao SelvaSYS!',
+      message: EMessage.WELCOME_MESSAGE,
       token: await this.authService.login(authDto),
     };
   }
