@@ -12,7 +12,7 @@ export class AuthController {
   @Post('login')
   async login(@Body() authDto: AuthDto) {
     return {
-      message: EMessage.WELCOME_MESSAGE,
+      message: `${EMessage.WELCOME_MESSAGE} ao SelvaSYS!`,
       token: await this.authService.login(authDto),
     };
   }
