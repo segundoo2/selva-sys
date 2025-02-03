@@ -7,6 +7,7 @@ import { AuthDto } from './dto/auth.dto';
 import { JwtService } from '@nestjs/jwt';
 import { UserRepository } from './user.repository';
 import * as bcrypt from 'bcrypt';
+import { EErrors } from 'src/enum/errors.enum';
 
 @Injectable()
 export class AuthService {
@@ -17,13 +18,11 @@ export class AuthService {
 
   async login(dto: AuthDto) {
     const user = await this.userRepository.findByEmail(dto.email);
-    console.log('Usuário encontrado:', user);
 
     const isPasswordValid = await bcrypt.compare(dto.password, user.password);
-    console.log('Senha válida:', isPasswordValid);
 
     if (!user || !isPasswordValid) {
-      throw new UnauthorizedException('Credenciais inválidas');
+      throw new UnauthorizedException(EErrors.INVALID_CREDENTIALS);
     }
 
     const tokens = await this.generateTokens(user.id, user.email);
@@ -36,12 +35,12 @@ export class AuthService {
     const user = await this.userRepository.findById(userId);
 
     if (!user || !user.refreshToken) {
-      throw new ForbiddenException('Acesso negado');
+      throw new ForbiddenException(EErrors.ACESS_DENIED);
     }
 
     const isValid = await bcrypt.compare(refreshToken, user.refreshToken);
     if (!isValid) {
-      throw new ForbiddenException('Token inválido');
+      throw new ForbiddenException(EErrors.INVALID_TOKEN);
     }
 
     const tokens = await this.generateTokens(user.id, user.email);

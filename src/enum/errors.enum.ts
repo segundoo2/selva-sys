@@ -1,5 +1,15 @@
 export enum EErrors {
-  INTERNAL_ERROR = 'Ocorreu um erro ao criar o usuário. Por favor, tente novamente mais tarde.',
+  INTERNAL_ERROR = 'Um erro interno foi detectado, por favor, tente novamente mais tarde.',
   USER_NOT_FOUND = 'Usuário não encontrado.',
   PASSWORD_REQUIRED = 'A senha é obrigatória.',
+  ACESS_DENIED = 'Acesso negado.',
+  INVALID_TOKEN = 'Token inválido.',
+  INVALID_CREDENTIALS = 'Credenciais inválidas.',
+  NAME_INVALID = 'Nome inválido.',
+  ACCESS_LEVEL = 'Nível de acesso é obrigatório.',
+  EMPTY_FIELD = 'Campo obrigatório.',
+  ROLE_INVALID = 'Nível de acesso inválido.',
+  EMAIL_INVALID = 'Email inválido.',
+  EMAIL_EXIST = 'Este email já está em uso.',
+  PASSWORD_LENGTH = 'A senha deve ter no mínimo 6 caracter.',
 }
