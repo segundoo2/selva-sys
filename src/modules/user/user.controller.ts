@@ -8,16 +8,19 @@ import {
   Post,
   Put,
   Query,
+  UseGuards,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update.dto';
 import { ResetPasswordDto } from './dto/resetPassword.dto';
+import { RefreshGuard } from '../auth/guards/refresh.guard';
 
 @Controller('user')
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
+  @UseGuards(RefreshGuard)
   @Post('/create')
   async createUser(@Body() createUserDto: CreateUserDto) {
     try {
