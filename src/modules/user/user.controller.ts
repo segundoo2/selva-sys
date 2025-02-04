@@ -8,16 +8,19 @@ import {
   Post,
   Put,
   Query,
+  UseGuards,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update.dto';
 import { ResetPasswordDto } from './dto/resetPassword.dto';
+import { csrfGuard } from '../auth/guards/csrf.guard';
 
 @Controller('user')
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
+  @UseGuards(csrfGuard)
   @Post('/create')
   async createUser(@Body() createUserDto: CreateUserDto) {
     try {
@@ -28,11 +31,13 @@ export class UserController {
     }
   }
 
+  @UseGuards(csrfGuard)
   @Get()
   async findAllUsers(@Query('email') email?: string) {
     return await this.userService.findAllUsers(email);
   }
 
+  @UseGuards(csrfGuard)
   @Put('/:id')
   async updateUser(
     @Param('id') id: string,
@@ -46,6 +51,7 @@ export class UserController {
     }
   }
 
+  @UseGuards(csrfGuard)
   @Patch('/:id')
   async resetPassword(
     @Param('id') id: string,
@@ -59,6 +65,7 @@ export class UserController {
     }
   }
 
+  @UseGuards(csrfGuard)
   @Delete('/:id')
   async deleteUser(@Param('id') id: string) {
     try {
