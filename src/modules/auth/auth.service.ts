@@ -46,9 +46,10 @@ export class AuthService {
       sameSite: 'strict',
     });
 
-    return {
-      acces_token: accessToken,
-    };
+    return res.json({
+      access_token: accessToken,
+      csrf_token: csrfToken,
+    });
   }
 
   async validateUser(email: string, password: string): Promise<any> {
