@@ -2,12 +2,12 @@ import { Module } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { AuthController } from './auth.controller';
 import { JwtModule } from '@nestjs/jwt';
-import { ConfigModule, ConfigService } from '@nestjs/config';
-import { JwtStrategy } from './strategies/jwt.strategy';
 import { UserRepository } from './user.repository';
 import { PrismaClient } from '@prisma/client';
-import { RefreshTokenStrategy } from './strategies/refresh.strategy';
 import { UserModule } from '../user/user.module';
+import { PassportModule } from '@nestjs/passport';
+import { csrfGuard } from './guards/csrf.guard';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
   imports: [
@@ -21,6 +21,6 @@ import { UserModule } from '../user/user.module';
   ],
   controllers: [AuthController],
   providers: [AuthService, csrfGuard, UserRepository, PrismaClient],
-  exports: [AuthService, CsrfGuard],
+  exports: [AuthService, csrfGuard],
 })
 export class AuthModule {}
