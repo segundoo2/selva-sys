@@ -7,27 +7,20 @@ import { JwtStrategy } from './strategies/jwt.strategy';
 import { UserRepository } from './user.repository';
 import { PrismaClient } from '@prisma/client';
 import { RefreshTokenStrategy } from './strategies/refresh.strategy';
+import { UserModule } from '../user/user.module';
 
 @Module({
   imports: [
     ConfigModule,
-    JwtModule.registerAsync({
-      imports: [ConfigModule],
-      inject: [ConfigService],
-      useFactory: async (configService: ConfigService) => ({
-        secret: configService.get<string>('JWT_SECRET'),
-        signOptions: { expiresIn: '1h' },
-      }),
+    JwtModule.register({
+      secret: process.env.JWT_SECRET || 'defaultSecret',
+      signOptions: { expiresIn: '15m' },
     }),
+    UserModule,
+    PassportModule,
   ],
   controllers: [AuthController],
-  providers: [
-    AuthService,
-    JwtStrategy,
-    RefreshTokenStrategy,
-    UserRepository,
-    PrismaClient,
-  ],
-  exports: [AuthService, JwtStrategy],
+  providers: [AuthService, csrfGuard, UserRepository, PrismaClient],
+  exports: [AuthService, CsrfGuard],
 })
 export class AuthModule {}

@@ -1,11 +1,11 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { UserService } from '../user/user.service';
 import { JwtService } from '@nestjs/jwt';
-import { AuthDto } from './dto/auth.dto';
-import { JwtPayload } from './interfaces/jwt-payload.interface';
-import { UserRepository } from './user.repository';
-import * as bcrypt from 'bcrypt';
 import { EErrors } from 'src/enum/errors.enum';
+import * as crypto from 'crypto';
+import * as bcrypt from 'bcrypt';
+import { UserRepository } from './user.repository';
+import { AuthDto } from './dto/auth.dto';
 
 @Injectable()
 export class AuthService {
@@ -15,51 +15,49 @@ export class AuthService {
     private userRepository: UserRepository,
   ) {}
 
-  async validateUser(email: string, password: string) {
-    const user = await this.userRepository.findByEmail(email);
-    if (user && bcrypt.compareSync(password, user.password)) {
-      const { ...result } = user;
-      return result;
-    }
-    throw new UnauthorizedException(EErrors.ACESS_DENIED);
-  }
-
-  async login(authDto: AuthDto) {
+  async login(authDto: AuthDto, res: any) {
     const user = await this.validateUser(authDto.email, authDto.password);
-
     if (!user) {
-      throw new Error(EErrors.INVALID_CREDENTIALS);
+      throw new UnauthorizedException(EErrors.INVALID_CREDENTIALS);
     }
-    const payload: JwtPayload = {
+    const payload = {
       email: user.email,
       sub: user.id,
       role: user.role,
     };
-
+    //refactory expire time
     const accessToken = this.jwtService.sign(payload, { expiresIn: '15m' });
-    const refreshToken = this.jwtService.sign(payload, { expiresIn: '1h' });
+
+    const refreshToken = this.jwtService.sign(payload, { expiresIn: '15m' });
+
+    const csrfToken = crypto.randomBytes(64).toString('hex');
+    //refactory cookies enum
+    res.cookie('csrf_token', csrfToken, {
+      secure: true,
+      httpOnly: false,
+      maxAge: 7 * 24 * 60 * 1000,
+      sameSite: 'strict',
+    });
+
+    res.cookie('refresh_token', refreshToken, {
+      httpOnly: true,
+      secure: true,
+      maxAge: 7 * 24 * 60 * 1000,
+      sameSite: 'strict',
+    });
 
     return {
-      access_token: accessToken,
-      refresh_token: refreshToken,
+      acces_token: accessToken,
     };
   }
 
-  async refreshToken(refreshToken: string) {
-    try {
-      const payload: JwtPayload = this.jwtService.verify(refreshToken);
-      const newAccessToken = this.jwtService.sign(
-        {
-          email: payload.email,
-          sub: payload.sub,
-          role: payload.role,
-        },
-        { expiresIn: '15m' },
-      );
+  async validateUser(email: string, password: string): Promise<any> {
+    const user = await this.userRepository.findByEmail(email);
 
-      return { access_token: newAccessToken };
-    } catch (error) {
-      throw new error(EErrors.INVALID_TOKEN);
+    if (user && bcrypt.compareSync(password, user.password)) {
+      const { ...result } = user;
+      return result;
     }
+    return null;
   }
 }
