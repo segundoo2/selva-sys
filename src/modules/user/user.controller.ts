@@ -14,14 +14,17 @@ import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update.dto';
 import { ResetPasswordDto } from './dto/resetPassword.dto';
-import { csrfGuard } from '../auth/guards/csrf.guard';
+import { CsrfGuard } from '../auth/guards/csrf.guard';
+import { RolesGuard } from '../auth/guards/roles.guard';
+import { Roles } from '../auth/decorators/role.decorator';
 
 @Controller('user')
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
-  @UseGuards(csrfGuard)
   @Post('/create')
+  @Roles('admin')
+  @UseGuards(CsrfGuard, RolesGuard)
   async createUser(@Body() createUserDto: CreateUserDto) {
     try {
       await this.userService.createUser(createUserDto);
@@ -31,14 +34,16 @@ export class UserController {
     }
   }
 
-  @UseGuards(csrfGuard)
   @Get()
+  @Roles('admin')
+  @UseGuards(CsrfGuard, RolesGuard)
   async findAllUsers(@Query('email') email?: string) {
     return await this.userService.findAllUsers(email);
   }
 
-  @UseGuards(csrfGuard)
   @Put('/:id')
+  @Roles('admin')
+  @UseGuards(CsrfGuard, RolesGuard)
   async updateUser(
     @Param('id') id: string,
     @Body() updateUserDto: UpdateUserDto,
@@ -51,8 +56,9 @@ export class UserController {
     }
   }
 
-  @UseGuards(csrfGuard)
   @Patch('/:id')
+  @Roles('admin')
+  @UseGuards(CsrfGuard, RolesGuard)
   async resetPassword(
     @Param('id') id: string,
     @Body() resetPasswordDto: ResetPasswordDto,
@@ -65,8 +71,9 @@ export class UserController {
     }
   }
 
-  @UseGuards(csrfGuard)
   @Delete('/:id')
+  @Roles('admin')
+  @UseGuards(CsrfGuard, RolesGuard)
   async deleteUser(@Param('id') id: string) {
     try {
       await this.userService.deleteUser(id);

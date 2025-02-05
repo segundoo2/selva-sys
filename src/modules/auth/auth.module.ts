@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { forwardRef, Module } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { AuthController } from './auth.controller';
 import { JwtModule } from '@nestjs/jwt';
@@ -6,8 +6,9 @@ import { UserRepository } from './user.repository';
 import { PrismaClient } from '@prisma/client';
 import { UserModule } from '../user/user.module';
 import { PassportModule } from '@nestjs/passport';
-import { csrfGuard } from './guards/csrf.guard';
+import { CsrfGuard } from './guards/csrf.guard';
 import { ConfigModule } from '@nestjs/config';
+import { RolesGuard } from './guards/roles.guard';
 
 @Module({
   imports: [
@@ -16,11 +17,11 @@ import { ConfigModule } from '@nestjs/config';
       secret: process.env.JWT_SECRET || 'defaultSecret',
       signOptions: { expiresIn: '15m' },
     }),
-    UserModule,
+    forwardRef(() => UserModule),
     PassportModule,
   ],
   controllers: [AuthController],
-  providers: [AuthService, csrfGuard, UserRepository, PrismaClient],
-  exports: [AuthService, csrfGuard],
+  providers: [AuthService, RolesGuard, CsrfGuard, UserRepository, PrismaClient],
+  exports: [AuthService, CsrfGuard, RolesGuard, JwtModule],
 })
 export class AuthModule {}
