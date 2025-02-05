@@ -25,13 +25,12 @@ export class AuthService {
       sub: user.id,
       role: user.role,
     };
-    //refactory expire time
     const accessToken = this.jwtService.sign(payload, { expiresIn: '15m' });
 
     const refreshToken = this.jwtService.sign(payload, { expiresIn: '15m' });
 
     const csrfToken = crypto.randomBytes(64).toString('hex');
-    //refactory cookies enum
+
     res.cookie('csrf_token', csrfToken, {
       secure: true,
       httpOnly: false,
