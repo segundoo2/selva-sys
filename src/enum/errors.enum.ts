@@ -2,7 +2,7 @@ export enum EErrors {
   INTERNAL_ERROR = 'Um erro interno foi detectado, por favor, tente novamente mais tarde.',
   USER_NOT_FOUND = 'Usuário não encontrado.',
   PASSWORD_REQUIRED = 'A senha é obrigatória.',
-  ACCESS_DENIED = 'Acesso negado.',
+  ACCESS_DENIED = 'Acesso negado! Você não possui permissão para acessar esse módulo.',
   INVALID_CREDENTIALS = 'Credenciais inválidas.',
   NAME_INVALID = 'Nome inválido.',
   ACCESS_LEVEL = 'Nível de acesso é obrigatório.',
