@@ -10,7 +10,7 @@ import {
   Query,
   UseGuards,
 } from '@nestjs/common';
-import { UserService } from './user.service';
+import { AdminService } from './admin.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update.dto';
 import { ResetPasswordDto } from './dto/resetPassword.dto';
@@ -18,16 +18,16 @@ import { CsrfGuard } from '../auth/guards/csrf.guard';
 import { RolesGuard } from '../auth/guards/roles.guard';
 import { Roles } from '../auth/decorators/role.decorator';
 
-@Controller('user')
-export class UserController {
-  constructor(private readonly userService: UserService) {}
+@Controller('admin')
+export class AdminController {
+  constructor(private readonly adminService: AdminService) {}
 
-  @Post('/create')
+  @Post('create')
   @Roles('admin')
   @UseGuards(CsrfGuard, RolesGuard)
   async createUser(@Body() createUserDto: CreateUserDto) {
     try {
-      await this.userService.createUser(createUserDto);
+      await this.adminService.createUser(createUserDto);
       return 'Usuário criado com sucesso!';
     } catch (error) {
       throw error;
@@ -38,10 +38,10 @@ export class UserController {
   @Roles('admin')
   @UseGuards(CsrfGuard, RolesGuard)
   async findAllUsers(@Query('email') email?: string) {
-    return await this.userService.findAllUsers(email);
+    return await this.adminService.findAllUsers(email);
   }
 
-  @Put('/:id')
+  @Put(':id')
   @Roles('admin')
   @UseGuards(CsrfGuard, RolesGuard)
   async updateUser(
@@ -49,14 +49,14 @@ export class UserController {
     @Body() updateUserDto: UpdateUserDto,
   ) {
     try {
-      await this.userService.updateUser(id, updateUserDto);
+      await this.adminService.updateUser(id, updateUserDto);
       return 'Usuário atualizado com sucesso!';
     } catch (error) {
       throw error;
     }
   }
 
-  @Patch('/:id')
+  @Patch(':id')
   @Roles('admin')
   @UseGuards(CsrfGuard, RolesGuard)
   async resetPassword(
@@ -64,19 +64,19 @@ export class UserController {
     @Body() resetPasswordDto: ResetPasswordDto,
   ) {
     try {
-      await this.userService.resetPassword(id, resetPasswordDto);
+      await this.adminService.resetPassword(id, resetPasswordDto);
       return 'Senha atualizada com sucesso!';
     } catch (error) {
       throw error;
     }
   }
 
-  @Delete('/:id')
+  @Delete(':id')
   @Roles('admin')
   @UseGuards(CsrfGuard, RolesGuard)
   async deleteUser(@Param('id') id: string) {
     try {
-      await this.userService.deleteUser(id);
+      await this.adminService.deleteUser(id);
       return 'Usuário deletado com sucesso!';
     } catch (error) {
       throw error;

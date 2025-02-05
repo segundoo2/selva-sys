@@ -1,18 +1,16 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
-import { UserService } from '../user/user.service';
 import { JwtService } from '@nestjs/jwt';
 import { EErrors } from 'src/enum/errors.enum';
 import * as crypto from 'crypto';
 import * as bcrypt from 'bcrypt';
-import { UserRepository } from './user.repository';
+import { AuthRepository } from './auth.repository';
 import { AuthDto } from './dto/auth.dto';
 
 @Injectable()
 export class AuthService {
   constructor(
-    private userService: UserService,
     private jwtService: JwtService,
-    private userRepository: UserRepository,
+    private authRepository: AuthRepository,
   ) {}
 
   async login(authDto: AuthDto, res: any) {
@@ -52,7 +50,7 @@ export class AuthService {
   }
 
   async validateUser(email: string, password: string): Promise<any> {
-    const user = await this.userRepository.findByEmail(email);
+    const user = await this.authRepository.findByEmail(email);
 
     if (user && bcrypt.compareSync(password, user.password)) {
       // eslint-disable-next-line @typescript-eslint/no-unused-vars

@@ -10,7 +10,7 @@ import { EErrors } from 'src/enum/errors.enum';
 import { UpdateUserDto } from './dto/update.dto';
 
 @Injectable()
-export class UserRepository {
+export class AdminRepository {
   constructor(private readonly prisma: PrismaClient) {}
 
   async createUser(createUserDto: CreateUserDto) {
