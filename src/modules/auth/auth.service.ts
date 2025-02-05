@@ -1,4 +1,8 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import {
+  ForbiddenException,
+  Injectable,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { EErrors } from 'src/enum/errors.enum';
 import * as crypto from 'crypto';
@@ -55,7 +59,7 @@ export class AuthService {
       csrf_token: csrfToken,
     });
   }
-  private async validateUser(email: string, password: string): Promise<any> {
+  async validateUser(email: string, password: string): Promise<any> {
     const user = await this.authRepository.findByEmail(email);
 
     if (user && bcrypt.compareSync(password, user.password)) {
@@ -69,6 +73,12 @@ export class AuthService {
   async refreshAccessToken(req, res) {
     const csrfToken = req.headers['x-csrf-token'] as string;
     const refreshToken = req.cookies.refresh_token;
+
+    const csrfTokenCookie = req.cookies['csrf_token'];
+
+    if (csrfToken !== csrfTokenCookie) {
+      throw new ForbiddenException(EErrors.CSRF_INVALID);
+    }
 
     if (!csrfToken) {
       throw new UnauthorizedException(EErrors.CSRF_INVALID);
@@ -108,7 +118,7 @@ export class AuthService {
         maxAge: 1 * 60 * 60 * 1000,
       },
       {
-        name: 'XSRF-TOKEN',
+        name: 'csrf_token',
         value: newCsrfToken,
         maxAge: 1 * 60 * 60 * 1000,
         httpOnly: false,
@@ -121,12 +131,12 @@ export class AuthService {
   generateCsrfToken() {
     return crypto.randomBytes(64).toString('hex');
   }
-  private generateAccessToken(userId: string, email: string, role: string) {
+  generateAccessToken(userId: string, email: string, role: string) {
     const payload = { userId, email, role };
     return this.jwtService.sign(payload, { expiresIn: '7d' });
   }
 
-  private generateRefreshToken(userId: string, email: string, role: string) {
+  generateRefreshToken(userId: string, email: string, role: string) {
     const payload = { userId, email, role };
     return this.jwtService.sign(payload, { expiresIn: '7d' });
   }
