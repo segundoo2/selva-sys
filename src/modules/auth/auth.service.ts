@@ -6,6 +6,7 @@ import * as bcrypt from 'bcrypt';
 import { AuthRepository } from './auth.repository';
 import { AuthDto } from './dto/auth.dto';
 
+// Refactor the: error messages, storage to cookies
 @Injectable()
 export class AuthService {
   constructor(
@@ -23,9 +24,9 @@ export class AuthService {
       sub: user.id,
       role: user.role,
     };
-    const accessToken = this.jwtService.sign(payload, { expiresIn: '15m' });
+    const accessToken = this.jwtService.sign(payload, { expiresIn: '5m' });
 
-    const refreshToken = this.jwtService.sign(payload, { expiresIn: '15m' });
+    const refreshToken = this.jwtService.sign(payload, { expiresIn: '7d' });
 
     const csrfToken = crypto.randomBytes(64).toString('hex');
 
@@ -43,13 +44,18 @@ export class AuthService {
       sameSite: 'strict',
     });
 
+    res.cookie('refresh_token', refreshToken, {
+      httpOnly: true,
+      secure: true,
+      maxAge: 7 * 24 * 60 * 1000,
+      sameSite: 'strict',
+    });
+
     return res.json({
-      access_token: accessToken,
       csrf_token: csrfToken,
     });
   }
-
-  async validateUser(email: string, password: string): Promise<any> {
+  private async validateUser(email: string, password: string): Promise<any> {
     const user = await this.authRepository.findByEmail(email);
 
     if (user && bcrypt.compareSync(password, user.password)) {
@@ -58,5 +64,72 @@ export class AuthService {
       return result;
     }
     return null;
+  }
+
+  async refreshAccessToken(req, res) {
+    const csrfToken = req.headers['x-csrf-token'] as string;
+    const refreshToken = req.cookies.refresh_token;
+
+    if (!csrfToken) {
+      throw new UnauthorizedException('CSRF token is missing.');
+    }
+
+    if (!refreshToken) {
+      throw new UnauthorizedException('Refresh token is missing.');
+    }
+
+    const decodedRefreshToken = await this.jwtService
+      .verifyAsync(refreshToken)
+      .catch(() => {
+        throw new UnauthorizedException('Invalid or expired refresh token.');
+      });
+
+    const newAccessToken = this.generateAccessToken(
+      decodedRefreshToken.userId,
+      decodedRefreshToken.email,
+      decodedRefreshToken.role,
+    );
+    const newRefreshToken = this.generateRefreshToken(
+      decodedRefreshToken.userId,
+      decodedRefreshToken.email,
+      decodedRefreshToken.role,
+    );
+    const newCsrfToken = this.generateCsrfToken();
+
+    res.cookie('refresh_token', newCsrfToken, {
+      httpOnly: true,
+      secure: true,
+      maxAge: 7 * 24 * 60 * 1000,
+      sameSite: 'strict',
+    });
+
+    res.cookie('refresh_token', newAccessToken, {
+      httpOnly: true,
+      secure: true,
+      maxAge: 7 * 24 * 60 * 1000,
+      sameSite: 'strict',
+    });
+
+    res.cookie('refresh_token', newRefreshToken, {
+      httpOnly: true,
+      secure: true,
+      maxAge: 7 * 24 * 60 * 1000,
+      sameSite: 'strict',
+    });
+
+    return res.json({ new_csrf_token: newCsrfToken });
+  }
+
+  generateCsrfToken() {
+    return crypto.randomBytes(64).toString('hex');
+  }
+  private generateAccessToken(userId: string, email: string, role: string) {
+    const payload = { userId, email, role };
+    return this.jwtService.sign(payload, { expiresIn: '7d' });
+  }
+
+  private generateRefreshToken(userId: string, email: string, role: string) {
+    const payload = { userId, email, role };
+    return this.jwtService.sign(payload, { expiresIn: '7d' });
   }
 }
