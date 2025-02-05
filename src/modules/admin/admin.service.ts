@@ -1,17 +1,17 @@
 import { Injectable } from '@nestjs/common';
-import { UserRepository } from './user.repository';
+import { AdminRepository } from './admin.repository';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update.dto';
 import * as bcrypt from 'bcrypt';
 import { ResetPasswordDto } from './dto/resetPassword.dto';
 @Injectable()
-export class UserService {
-  constructor(private readonly userRepository: UserRepository) {}
+export class AdminService {
+  constructor(private readonly adminRepository: AdminRepository) {}
 
   async createUser(createUserDto: CreateUserDto) {
     try {
       createUserDto.password = await bcrypt.hash(createUserDto.password, 10);
-      return this.userRepository.createUser(createUserDto);
+      return this.adminRepository.createUser(createUserDto);
     } catch (error) {
       throw error;
     }
@@ -21,13 +21,13 @@ export class UserService {
     const where = email
       ? { email: { contains: email, mode: 'insensitive' } }
       : {};
-    return this.userRepository.findAllUsers(where);
+    return this.adminRepository.findAllUsers(where);
   }
 
   async updateUser(id: string, updateUserDto: UpdateUserDto) {
     try {
       updateUserDto.password = await bcrypt.hash(updateUserDto.password, 10);
-      return this.userRepository.updateUser(id, updateUserDto);
+      return this.adminRepository.updateUser(id, updateUserDto);
     } catch (error) {
       throw error;
     }
@@ -36,7 +36,7 @@ export class UserService {
   async resetPassword(id: string, resetPasswordDto: ResetPasswordDto) {
     try {
       const passwordHashed = await bcrypt.hash(resetPasswordDto.password, 10);
-      return this.userRepository.resetPassword(id, passwordHashed);
+      return this.adminRepository.resetPassword(id, passwordHashed);
     } catch (error) {
       throw error;
     }
@@ -44,7 +44,7 @@ export class UserService {
 
   async deleteUser(id: string) {
     try {
-      return this.userRepository.deleteUser(id);
+      return this.adminRepository.deleteUser(id);
     } catch (error) {
       throw error;
     }

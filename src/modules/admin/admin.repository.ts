@@ -6,12 +6,11 @@ import {
   InternalServerErrorException,
   NotFoundException,
 } from '@nestjs/common';
-import { ECrudValidation } from 'src/enum/crud-validation.enum';
 import { EErrors } from 'src/enum/errors.enum';
 import { UpdateUserDto } from './dto/update.dto';
 
 @Injectable()
-export class UserRepository {
+export class AdminRepository {
   constructor(private readonly prisma: PrismaClient) {}
 
   async createUser(createUserDto: CreateUserDto) {
@@ -21,7 +20,7 @@ export class UserRepository {
       });
 
       if (existingEmail) {
-        throw new ConflictException(ECrudValidation.EMAIL_EXIST);
+        throw new ConflictException(EErrors.EMAIL_EXIST);
       }
 
       return this.prisma.user.create({
