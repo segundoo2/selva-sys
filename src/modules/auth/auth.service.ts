@@ -5,8 +5,8 @@ import * as crypto from 'crypto';
 import * as bcrypt from 'bcrypt';
 import { AuthRepository } from './auth.repository';
 import { AuthDto } from './dto/auth.dto';
+import { setCookies } from 'src/util/set-cookies.util';
 
-// Refactor the: error messages, storage to cookies
 @Injectable()
 export class AuthService {
   constructor(
@@ -71,17 +71,17 @@ export class AuthService {
     const refreshToken = req.cookies.refresh_token;
 
     if (!csrfToken) {
-      throw new UnauthorizedException('CSRF token is missing.');
+      throw new UnauthorizedException(EErrors.CSRF_INVALID);
     }
 
     if (!refreshToken) {
-      throw new UnauthorizedException('Refresh token is missing.');
+      throw new UnauthorizedException(EErrors.REFRESH_TOKEN_INVALID);
     }
 
     const decodedRefreshToken = await this.jwtService
       .verifyAsync(refreshToken)
       .catch(() => {
-        throw new UnauthorizedException('Invalid or expired refresh token.');
+        throw new UnauthorizedException(EErrors.REFRESH_TOKEN_INVALID);
       });
 
     const newAccessToken = this.generateAccessToken(
@@ -96,26 +96,24 @@ export class AuthService {
     );
     const newCsrfToken = this.generateCsrfToken();
 
-    res.cookie('refresh_token', newCsrfToken, {
-      httpOnly: true,
-      secure: true,
-      maxAge: 7 * 24 * 60 * 1000,
-      sameSite: 'strict',
-    });
-
-    res.cookie('refresh_token', newAccessToken, {
-      httpOnly: true,
-      secure: true,
-      maxAge: 7 * 24 * 60 * 1000,
-      sameSite: 'strict',
-    });
-
-    res.cookie('refresh_token', newRefreshToken, {
-      httpOnly: true,
-      secure: true,
-      maxAge: 7 * 24 * 60 * 1000,
-      sameSite: 'strict',
-    });
+    setCookies(res, [
+      {
+        name: 'refresh_token',
+        value: newRefreshToken,
+        maxAge: 7 * 24 * 60 * 60 * 1000,
+      },
+      {
+        name: 'access_token',
+        value: newAccessToken,
+        maxAge: 1 * 60 * 60 * 1000,
+      },
+      {
+        name: 'XSRF-TOKEN',
+        value: newCsrfToken,
+        maxAge: 1 * 60 * 60 * 1000,
+        httpOnly: false,
+      },
+    ]);
 
     return res.json({ new_csrf_token: newCsrfToken });
   }

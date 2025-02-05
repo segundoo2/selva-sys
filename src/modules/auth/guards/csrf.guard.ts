@@ -4,6 +4,7 @@ import {
   Injectable,
   CanActivate,
 } from '@nestjs/common';
+import { EErrors } from 'src/enum/errors.enum';
 
 @Injectable()
 export class CsrfGuard implements CanActivate {
@@ -13,7 +14,7 @@ export class CsrfGuard implements CanActivate {
       request.headers['x-csrf-token'] || request.body['csrf_token'];
 
     if (!csrfToken) {
-      throw new ForbiddenException('CSRF token is missing');
+      throw new ForbiddenException(EErrors.CSRF_INVALID);
     }
 
     const csrfTokenCookie = request.cookies['csrf_token'];

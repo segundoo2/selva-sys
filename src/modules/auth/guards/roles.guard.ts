@@ -9,6 +9,7 @@ import { Reflector } from '@nestjs/core';
 import { JwtService } from '@nestjs/jwt';
 import { ROLES_KEY } from '../decorators/role.decorator';
 import { Request } from 'express';
+import { EErrors } from 'src/enum/errors.enum';
 
 @Injectable()
 export class RolesGuard implements CanActivate {
@@ -31,7 +32,7 @@ export class RolesGuard implements CanActivate {
     const token = request.cookies.access_token;
 
     if (!token) {
-      throw new UnauthorizedException('Access token is missing.');
+      throw new UnauthorizedException(EErrors.ACCESS_TOKEN_INVALID);
     }
 
     // A verificação assíncrona do token
@@ -39,24 +40,22 @@ export class RolesGuard implements CanActivate {
       .verifyAsync(token)
       .catch((error) => {
         if (error.name === 'TokenExpiredError') {
-          throw new ForbiddenException('Token expired.');
+          throw new ForbiddenException(EErrors.ACCESS_TOKEN_INVALID);
         }
         if (error.name === 'JsonWebTokenError') {
-          throw new ForbiddenException('Invalid token.');
+          throw new ForbiddenException(EErrors.ACCESS_TOKEN_INVALID);
         }
-        throw new ForbiddenException('Token verification failed.');
+        throw new ForbiddenException(EErrors.VERIFICATION_TOKEN);
       });
 
-    const userRole = decodedToken?.role;
+    const userRole = decodedToken.role;
 
     if (!userRole) {
-      throw new UnauthorizedException('User role not found in token.');
+      throw new UnauthorizedException(EErrors.ROLE_NOT_FOUND);
     }
 
     if (!requiredRoles.includes(userRole)) {
-      throw new ForbiddenException(
-        'You do not have permission to access this resource.',
-      );
+      throw new ForbiddenException(EErrors.ACCESS_DENIED);
     }
 
     return true;
