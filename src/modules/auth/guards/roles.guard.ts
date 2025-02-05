@@ -1,13 +1,20 @@
-import { CanActivate, ExecutionContext, ForbiddenException, Injectable } from "@nestjs/common";
-import { Reflector } from "@nestjs/core";
-import { JwtService } from "@nestjs/jwt";
-import { Observable } from "rxjs";
-import { ROLES_KEY } from "../decorators/role.decorator";
+import {
+  CanActivate,
+  ExecutionContext,
+  ForbiddenException,
+  Injectable,
+} from '@nestjs/common';
+import { Reflector } from '@nestjs/core';
+import { JwtService } from '@nestjs/jwt';
+import { ROLES_KEY } from '../decorators/role.decorator';
 import { Request } from 'express';
 
 @Injectable()
 export class RolesGuard implements CanActivate {
-  constructor(private reflector: Reflector, private jwtService: JwtService) {}
+  constructor(
+    private reflector: Reflector,
+    private jwtService: JwtService,
+  ) {}
 
   canActivate(context: ExecutionContext): boolean {
     const requiredRoles = this.reflector.get<string[]>(
@@ -32,7 +39,9 @@ export class RolesGuard implements CanActivate {
 
       const hasRole = requiredRoles.includes(userRole);
       if (!hasRole) {
-        throw new ForbiddenException('You do not have permission to access this resource');
+        throw new ForbiddenException(
+          'You do not have permission to access this resource',
+        );
       }
 
       return true;
