@@ -1,15 +1,19 @@
 <main>
-  <section>
+  <section class="form-container">
     <form action="post">
-      <label for="email">Email</label>
-      <input type="email" name="email" required>
+      <div class="form-login">
+        <label for="email">Email</label>
+        <input type="email" name="email" class="input-email" required placeholder="Digite seu email"/>
 
-      <label for="password">Senha</label>
-      <input type="password" name="password" required>
+        <label for="password">Senha</label>
+        <input type="password" name="password" required placeholder="Digite sua senha"/>
 
-      <p>Esqueceu a senha? <a href="#">Clique aqui</a></p>
+        <div class="forgot-password">
+          <span>Esqueceu a senha? <a href="#">Clique aqui</a></span>
+        </div>
 
-      <button type="submit">Entrar</button>
+        <button type="submit">Entrar</button>
+      </div>
     </form>
   </section>
 </main>

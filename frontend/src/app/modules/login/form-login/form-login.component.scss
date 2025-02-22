@@ -1,73 +1,125 @@
-section {
+.form-container {
   display: flex;
   justify-content: center;
-  align-items: flex-start;
-  height: 60vh;
+  align-items: center;
+  height: 50vh;
+}
 
-  form {
-    display: flex;
-    flex-direction: column;
-    width: 80%;
-    margin-bottom: 10vh;
-    margin-top: 8vh;
+.form-login {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 3vh;
+  width: 80vw;
+  height: 30vh;
+  margin-top: 10vh;
+  background-color: #ffffff27;
+  backdrop-filter: blur(2px);
 
-    label {
-      margin-left: 2rem;
-      font-size: 3rem;
+  @media (min-width: 1024px) {
+    margin-top: 0.5vh;
+    width: 30vw;
+    height: 40vh;
+  }
+
+  label {
+    margin-bottom: -2.5vh;
+    margin-left: 3vw;
+    font-size: 2.5rem;
+
+    @media (min-width: 600px) {
+      font-size: 2rem;
     }
 
-    label:nth-of-type(2) {
-      margin-top: 8rem;
+    @media (min-width: 1024px) {
+      margin-left: 1vw;
+      font-size: 1.2vw;
+    }
+  }
+
+  input {
+    padding: 1vh;
+    width: 80vw;
+    height: 4vh;
+    font-size: 2.5rem;
+    text-indent: 3vw;
+    border: none;
+    border-radius: 20vh;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    background-color: #ffffff00;
+    backdrop-filter: blur(5px);
+
+    @media (min-width: 600px) {
+      font-size: 2rem;
     }
 
-    input {
-      margin-top: 1rem;
-      padding: 1rem;
+    @media (min-width: 1024px) {
+      font-size: 1vw;
+      text-indent: 0.7vw;
       height: 5vh;
-      width: 78vw;
-      font-size: 3rem;
-      font-weight: normal;
-      border: none;
-      border-radius: 20rem;
-      box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
-      background-color: #ffffff00;
-      backdrop-filter: blur(3px);
-      -webkit-backdrop-filter: blur(3px);
-    }
-
-    button {
-      margin-top: 10rem;
-      padding: 2rem;
-      font-size: 3rem;
-      color: white;
-      border: none;
-      border-radius: 20rem;
-      box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
-      background-color: #C48B00;
-      backdrop-filter: blur(3px);
-      -webkit-backdrop-filter: blur(3px);
-      cursor: pointer;;
-    }
-
-    button:hover, button:active {
-      background-color: #ffce52;
-    }
-
-    p, a {
-      margin-top: 2rem;
-      margin-left: 2rem;
-      font-size: 2.5rem;
-      text-align: justify;
-      color: #C48B00;
+      width: 30vw;
 
     }
+  }
+}
 
-    a {
-      margin-left: 0;
-      text-decoration: none;
-      color: #976CFA;
+.forgot-password {
+  display: flex;
+  justify-content: flex-start;
+  margin-left: 3vw;
+
+  @media (min-width: 1024px) {
+    margin-left: 1vw;
+    margin-top: -0.8vw;
+  }
+
+  span,
+  a {
+    font-size: 2rem;
+    color: #c48b00;
+
+    @media (min-width: 600px) {
+      font-size: 1.5rem;
     }
 
+    @media (min-width: 1024px) {
+      font-size: 1.2vw;
+    }
+  }
 
+  a {
+    text-decoration: none;
+    color: #976cfa;
+  }
+}
+
+button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 4vh;
+  margin-top: 2vh;
+  font-size: 2rem;
+  color: #ffff;
+  background-color: #c48b00;
+  border-radius: 20vh;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+  border: none;
+  cursor: pointer;
+
+  @media (min-width: 600px) {
+    padding-top: 1vh;
+    padding-bottom: 1vh;
+    margin: auto;
+    width: 80vw;
+    height: 10vh;
+    margin-left: 1.6vw;
+  }
+
+  @media (min-width: 1024px) {
+    font-size: 1.2vw;
+    width: 30vw;
+    height: 5vh;
+    margin-left: 0.3vw;
   }
 }
