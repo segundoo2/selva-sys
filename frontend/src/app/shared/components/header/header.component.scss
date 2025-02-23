@@ -17,5 +17,27 @@ header {
     height: 12vw;
     width: 12vw;
   }
-}
 
+  @media (max-width: 480px) {
+    h1 {
+      font-size: 7vw;
+    }
+
+    img {
+      height: 25vw;
+      width: 25vw;
+    }
+  }
+
+  @media (max-width: 1024px) {
+    h1 {
+      font-size: 5vw;
+    }
+
+    img {
+      height: 20vw;
+      width: 20vw;
+    }
+  }
+
+}
