@@ -18,26 +18,32 @@ header {
     width: 12vw;
   }
 
-  @media (max-width: 480px) {
+
+  @media (max-width: 1024px) {
+    margin-top: 3vh;
+    margin-bottom: 10vh;
+
     h1 {
       font-size: 7vw;
     }
 
     img {
-      height: 25vw;
-      width: 25vw;
+      height: 30vw;
+      width: 30vw;
     }
   }
 
-  @media (max-width: 1024px) {
+  @media (max-width: 480px) {
+    margin-top: 5vh;
+    margin-bottom: 10vh;
+
     h1 {
-      font-size: 5vw;
+      font-size: 10vw;
     }
 
     img {
-      height: 20vw;
-      width: 20vw;
+      height: 40vw;
+      width: 40vw;
     }
   }
-
 }

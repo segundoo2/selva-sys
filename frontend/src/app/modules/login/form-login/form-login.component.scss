@@ -120,4 +120,54 @@
       transform: translateY(4px);
     }
   }
+
+  @media (max-width: 768px) {
+    .email input,
+    .password input {
+      width: 70vw;
+      height: 6vh;
+      font-size: 4vw;
+      text-indent: 2vw;
+    }
+
+    .email label,
+    .password label,
+    .forgot-password,
+    .error {
+      margin-left: 3vw;
+    }
+
+    .input-password .toggle-password {
+      right: 10%;
+    }
+
+    .button-submit button {
+      padding: 4%;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .email input,
+    .password input {
+      width: 80vw;
+      height: 5vh;
+      font-size: 5vw;
+      text-indent: 3vw;
+    }
+
+    .email label,
+    .password label,
+    .forgot-password,
+    .error {
+      margin-left: 5vw;
+    }
+
+    .input-password .toggle-password {
+      right: 5%;
+    }
+
+    .button-submit button {
+      padding: 5%;
+    }
+  }
 }
