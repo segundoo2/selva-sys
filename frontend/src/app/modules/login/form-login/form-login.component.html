@@ -1,19 +1,87 @@
 <main>
   <section class="form-container">
-    <form action="post">
-      <div class="form-login">
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+      <!-- email -->
+      <div class="email">
         <label for="email">Email</label>
-        <input type="email" name="email" class="input-email" required placeholder="Digite seu email"/>
+        <input
+          type="email"
+          name="email"
+          formControlName="email"
+          class="input-email"
+          [ngClass]="{
+            invalid:
+              formControls['email'].touched && formControls['email'].invalid
+          }"
+          required
+          placeholder="Digite seu email"
+        />
 
-        <label for="password">Senha</label>
-        <input type="password" name="password" required placeholder="Digite sua senha"/>
-
-        <div class="forgot-password">
-          <span>Esqueceu a senha? <a href="#">Clique aqui</a></span>
+        <!-- Errors -->
+        <div class="error"
+          *ngIf="formControls['email'].touched && formControls['email'].invalid"
+        >
+          <small *ngIf="formControls['email'].errors?.['required']">
+            O email é obrigatório.
+          </small>
+          <small *ngIf="formControls['email'].errors?.['email']">
+            Insira um email válido.
+          </small>
         </div>
-
-        <button type="submit">Entrar</button>
       </div>
+
+      <!-- password -->
+      <div class="password">
+        <label for="password">Senha</label>
+        <div class="input-password">
+          <input
+            type="password"
+            [type]="showPassword ? 'text' : 'password'"
+            name="password"
+            formControlName="password"
+            required
+            placeholder="Digite sua senha"
+            [ngClass]="{
+              invalid:
+                formControls['password'].touched &&
+                formControls['password'].invalid
+            }"
+          />
+          <button
+            type="button"
+            class="toggle-password"
+            (click)="togglePasswordVisibility()"
+            aria-label="Alternar visualização da senha"
+          >
+            <i [ngClass]="showPassword ? 'fas fa-eye' : 'fas fa-eye-slash'"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- Errors -->
+      <div class="error"
+        *ngIf="
+          formControls['password'].touched && formControls['password'].invalid
+        "
+      >
+        <small *ngIf="formControls['password'].errors?.['required']">
+          A senha é obrigatória.
+        </small>
+
+        <small *ngIf="formControls['password'].errors?.['minLength']">
+          A senha deve ter no mínimo 6 caracteres.
+        </small>
+
+        <small *ngIf="formControls['password'].errors?.['maxLength']">
+          A senha deve ter no máximo 10 caracteres.
+        </small>
+      </div>
+
+      <div class="forgot-password">
+        <small>Esqueceu a senha? <a href="#">Clique aqui</a></small>
+      </div>
+
+      <div class="button-submit"><button type="submit" [disabled]="loginForm.invalid">Entrar</button></div>
     </form>
   </section>
 </main>

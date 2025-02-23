@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HeaderComponent } from '../../shared/components/header/header.component';
 import { FormLoginComponent } from './form-login/form-login.component';
+import { ReactiveFormsModule } from '@angular/forms';
 
 
 
@@ -10,7 +11,8 @@ import { FormLoginComponent } from './form-login/form-login.component';
     FormLoginComponent
   ],
   imports: [
-    CommonModule
+    CommonModule,
+    ReactiveFormsModule
   ]
 })
-export class LoginModule { }
+export class LoginModule {}
