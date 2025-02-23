@@ -1,10 +1,6 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
-
 header {
   height: 100%;
   width: 100%;
-  margin: 0;
-  padding: 0;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -12,40 +8,14 @@ header {
   background-color: #ffffff4d;
 
   h1 {
-    margin-bottom: 20px;
     color: #06A761;
-    font: bold 7vw "Inter", sans-serif;
+    font: bold 3vw "Inter", sans-serif;
   }
 
   img {
-    margin-top: 30px;
-    height: 38%;
-    width: 38%;
+    margin-top: 1vw;
+    height: 12vw;
+    width: 12vw;
   }
 }
 
-@media (min-width: 600px) {
-  header {
-    h1 {
-      font-size: 4.5vw;
-    }
-
-    img {
-      height: 20%;
-      width: 20%;
-    }
-  }
-}
-
-@media (min-width: 1024px) {
-  header {
-    h1 {
-      font-size: 3vw;
-    }
-
-    img {
-      height: 15%;
-      width: 15%;
-    }
-  }
-}
