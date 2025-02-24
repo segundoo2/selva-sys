@@ -65,11 +65,13 @@ O arquivo `.gitignore` está configurado para ignorar arquivos e diretórios des
 Para executar o projeto localmente, siga os passos abaixo:
 
 1. Instale as dependências:
+
    ```bash
    npm install
    ```
 
 2. Inicie a aplicação:
+
    ```bash
    npm start
    ```
