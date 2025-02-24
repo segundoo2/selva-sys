@@ -149,4 +149,4 @@ Para executar o projeto localmente, siga os passos abaixo:
 
 ## Autor
 
-Desenvolvido por: Edilson Segundo.
+- Desenvolvido por: Edilson Segundo.
