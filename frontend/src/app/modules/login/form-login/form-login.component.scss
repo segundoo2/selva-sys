@@ -4,7 +4,7 @@
   align-items: center;
   height: 30%;
   width: 100%;
-  margin-top: 5vw;
+  margin-top: 4vw;
   backdrop-filter: blur(2px);
 
   .error {
@@ -36,25 +36,30 @@
   }
 
   .email label,
+  .password label {
+    font-size: 1.7vw;
+  }
+
+
+  .email label,
   .password label,
   .forgot-password,
   .error {
     margin-left: 1.2vw;
   }
 
-  .email {
+  .email, .password {
     display: flex;
     flex-direction: column;
     justify-content: center;
     gap: 0.2vh;
+  }
+
+  .email {
     margin-bottom: 1vh;
   }
 
   .password {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    gap: 0.2vh;
     margin-bottom: 0.5vh;
   }
 
@@ -127,19 +132,22 @@
     .password input {
       width: 70vw;
       height: 6vh;
-      font-size: 4vw;
+      font-size: 3vw;
       text-indent: 2vw;
     }
 
     .email label,
-    .password label,
-    .forgot-password small {
-      font-size: 5vw;
+    .password label {
+      font-size: 4vw;
       margin-left: 3vw;
     }
 
-    .forgot-password a {
-      font-size: 5vw;
+    .forgot-password {
+      margin-left: 3vw;
+    }
+
+    .forgot-password small, .forgot-password a {
+      font-size: 3vw;
     }
 
     .error small {
@@ -152,7 +160,7 @@
     }
 
     .button-submit button {
-      padding: 4%;
+      padding: 2%;
       font-size: 5vw;
     }
   }
@@ -163,8 +171,17 @@
     .password input {
       width: 80vw;
       height: 5vh;
-      font-size: 5vw;
+      font-size: 4vw;
       text-indent: 3vw;
+    }
+
+    .email label,
+    .password label {
+      font-size: 5vw;
+    }
+
+    .forgot-password small, .forgot-password a {
+      font-size: 4vw;
     }
 
     .input-password .toggle-password {
@@ -176,7 +193,7 @@
     }
 
     .button-submit button {
-      padding: 5%;
+      padding: 3%;
     }
   }
 }
