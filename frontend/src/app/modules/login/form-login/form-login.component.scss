@@ -121,7 +121,8 @@
     }
   }
 
-  @media (max-width: 768px) {
+  //tablet
+  @media (max-width: 1024px) {
     .email input,
     .password input {
       width: 70vw;
@@ -132,20 +133,31 @@
 
     .email label,
     .password label,
-    .forgot-password,
-    .error {
+    .forgot-password small {
+      font-size: 5vw;
       margin-left: 3vw;
     }
 
+    .forgot-password a {
+      font-size: 5vw;
+    }
+
+    .error small {
+      margin-left: 3vw;
+      font-size: 3.5vw;
+    }
+
     .input-password .toggle-password {
-      right: 10%;
+      right: 17.5%;
     }
 
     .button-submit button {
       padding: 4%;
+      font-size: 5vw;
     }
   }
 
+  //Smartphone
   @media (max-width: 480px) {
     .email input,
     .password input {
@@ -155,15 +167,12 @@
       text-indent: 3vw;
     }
 
-    .email label,
-    .password label,
-    .forgot-password,
-    .error {
-      margin-left: 5vw;
-    }
-
     .input-password .toggle-password {
-      right: 5%;
+      right: 14%;
+
+      i{
+        font-size: 5vw;
+      }
     }
 
     .button-submit button {
