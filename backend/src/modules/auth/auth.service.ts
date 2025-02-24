@@ -54,10 +54,6 @@ export class AuthService {
       maxAge: 7 * 24 * 60 * 1000,
       sameSite: 'strict',
     });
-
-    return res.json({
-      csrf_token: csrfToken,
-    });
   }
   async validateUser(email: string, password: string): Promise<any> {
     const user = await this.authRepository.findByEmail(email);

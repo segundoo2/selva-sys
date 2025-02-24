@@ -1,0 +1,199 @@
+.form-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 30%;
+  width: 100%;
+  margin-top: 4vw;
+  backdrop-filter: blur(2px);
+
+  .error {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    margin-top: 0.2vh;
+
+    small {
+      color: rgb(255, 45, 45);
+      font-size: 0.8rem;
+    }
+  }
+
+  .email input,
+  .password input {
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+    width: 27vw;
+    height: 8vh;
+    font-size: 1.3vw;
+    text-indent: 1vw;
+    border: none;
+    border-radius: 20vw;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    background-color: #ffffff00;
+    backdrop-filter: blur(4px);
+  }
+
+  .email label,
+  .password label {
+    font-size: 1.7vw;
+  }
+
+
+  .email label,
+  .password label,
+  .forgot-password,
+  .error {
+    margin-left: 1.2vw;
+  }
+
+  .email, .password {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 0.2vh;
+  }
+
+  .email {
+    margin-bottom: 1vh;
+  }
+
+  .password {
+    margin-bottom: 0.5vh;
+  }
+
+  .input-password {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5vw;
+
+    .toggle-password {
+      background: none;
+      border: none;
+      width: none;
+      position: fixed;
+      right: 38%;
+
+      i {
+        font-size: 2.5vh;
+      }
+    }
+  }
+
+  .forgot-password {
+    display: flex;
+    justify-content: flex-start;
+    margin-top: 1vh;
+
+    small {
+      color: #c48b00;
+    }
+
+    a {
+      color: #976cfa;
+      text-decoration: none;
+    }
+
+    small,
+    a {
+      margin-bottom: 1vh;
+      font-size: 0.8rem;
+    }
+  }
+
+  .button-submit button {
+    margin-top: 2vh;
+    width: 100%;
+    padding: 3%;
+    border: none;
+    border-radius: 20vw;
+    background-color: #f2c022;
+    color: #ffffff;
+    transition: all 0.2s ease;
+    cursor: pointer;
+
+    &:hover {
+      background-color: #f4d62c;
+    }
+
+    &:active {
+      box-shadow: rgba(50, 50, 93, 0.25) 0px 30px 60px -12px inset,
+        rgba(0, 0, 0, 0.3) 0px 18px 36px -18px inset;
+      transform: translateY(4px);
+    }
+  }
+
+  //tablet
+  @media (max-width: 1024px) {
+    .email input,
+    .password input {
+      width: 70vw;
+      height: 6vh;
+      font-size: 3vw;
+      text-indent: 2vw;
+    }
+
+    .email label,
+    .password label {
+      font-size: 4vw;
+      margin-left: 3vw;
+    }
+
+    .forgot-password {
+      margin-left: 3vw;
+    }
+
+    .forgot-password small, .forgot-password a {
+      font-size: 3vw;
+    }
+
+    .error small {
+      margin-left: 3vw;
+      font-size: 3.5vw;
+    }
+
+    .input-password .toggle-password {
+      right: 17.5%;
+    }
+
+    .button-submit button {
+      padding: 2%;
+      font-size: 5vw;
+    }
+  }
+
+  //Smartphone
+  @media (max-width: 480px) {
+    .email input,
+    .password input {
+      width: 80vw;
+      height: 5vh;
+      font-size: 4vw;
+      text-indent: 3vw;
+    }
+
+    .email label,
+    .password label {
+      font-size: 5vw;
+    }
+
+    .forgot-password small, .forgot-password a {
+      font-size: 4vw;
+    }
+
+    .input-password .toggle-password {
+      right: 14%;
+
+      i{
+        font-size: 5vw;
+      }
+    }
+
+    .button-submit button {
+      padding: 3%;
+    }
+  }
+}

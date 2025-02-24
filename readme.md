@@ -1,161 +1,152 @@
-# 📖 Documentação do SelvaSYS  
+# SelvaSYS
 
-### João 3:16 Deus amou o mundo de tal maneira que deu seu único filho para todos que crerem Nele não se perca, mas tenha vida eterna.
----
+Este repositório contém o frontend e o backend do projeto SelvaSYS, uma aplicação web desenvolvida com Angular e NestJS.
 
-**Versão:** 1.0.0
-**Última atualização:** 05/02/2025
+## Sobre o SelvaSYS
 
-- **Analista de sistema:** Edilson Segundo
-- **Design de interface:** Edilson Segundo
-- **Design de experiência:** Edilson Segundo
-- **Desenvolvedor front-end:** Edilson Segundo
-- **Desenvolvedor back-end:** Edilson Segundo
+O SelvaSYS é um projeto voluntário feito para o clube de desbravadores da Igreja Adventista do Sétimo Dia de Planalto 1 do município de Natal-RN, Reino Selvagem. O projeto trata-se de um sistema ERP que auxília na gestão do clube Reino Selvagem como um todo. Nele é possível administrar os membros do clube, unidades, classes, especialidades, secretária, finanças, patrimônio, eventos e ranking de unidades. Além disso o SelvaSYS contém um módulo exclusivo para o administrador do sistema (que será o próprio desenvolvedor), para administrar os usuários dele. Cada usuário acessará o sistema com o email e senha cadastrado e terá um nível de acesso que controlará quais módulos ele poderá acessar.
 
----
+### Níveis de Acesso
 
-## 1️⃣ Visão Geral  
+- **Admin:** Acesso total ao sistema.
+- **Diretor:** Acesso total ao sistema, exceto o painel de usuário.
+- **Secretário:** Acesso aos módulos membros, unidades, secretaria, finanças e patrimônio.
+- **Tesoureiro:** Acesso aos módulos de finanças e patrimônio.
+- **Instrutor:** Acesso aos módulos de classes, especialidades e ranking de unidades.
+- **Conselheiro:** Acesso aos módulos de unidades e ranking de unidades.
 
-### 1.1 O que é o SelvaSYS?  
+## Estrutura do Projeto
 
-O **SelvaSYS** é um **ERP especializado** para a gestão do **clube de desbravadores Reino Selvagem**, permitindo o gerenciamento integrado de **usuários, eventos, mensalidades, patrimônio e documentos**.  
+A estrutura do projeto é organizada da seguinte forma:
 
-### 1.2 Tecnologias Utilizadas  
+- **frontend**: Contém o código fonte do frontend da aplicação.
+  - **src/app**: Contém os componentes principais da aplicação.
+    - **app.component.ts**: Componente principal da aplicação.
+    - **app.module.ts**: Módulo principal da aplicação.
+    - **app-routing.module.ts**: Configuração das rotas da aplicação.
+    - **modules**: Módulos específicos da aplicação.
+      - **login**: Módulo de login.
+        - **form-login**: Componente de formulário de login.
+    - **shared**: Módulos e componentes compartilhados.
+      - **components**: Componentes compartilhados como header e footer.
+    - **core**: Serviços e interceptores principais.
+      - **services**: Serviços como AuthService.
+      - **interceptors**: Interceptores como CsrfInterceptor.
+      - **guards**: Guards como AuthGuard.
+  - **assets**: Contém os arquivos estáticos como imagens e estilos globais.
+  - **styles.scss**: Arquivo principal de estilos.
 
-**Desenvolvimento:**
-- **Front-end:** Angular
-- **Back-end:** NestJS + Prisma ORM  
-- **Banco de Dados:** PostgreSQL
+- **backend**: Contém o código fonte do backend da aplicação.
+  - **src**: Contém o código fonte da aplicação.
+    - **modules**: Módulos da aplicação.
+      - **admin**: Módulo de administração.
+      - **auth**: Módulo de autenticação.
+    - **enum**: Contém enums utilizados na aplicação.
+    - **interface**: Contém interfaces utilizadas na aplicação.
+    - **util**: Contém utilitários utilizados na aplicação.
+    - **app.module.ts**: Módulo principal da aplicação.
+    - **main.ts**: Arquivo principal para iniciar a aplicação.
+  - **prisma**: Contém o esquema do Prisma e as migrações.
+  - **test**: Contém os testes end-to-end.
 
-**Segurança:**
-- Helmet
-- JWT Service
-- HTTPOnly Cookies
+## Dependências
 
-**Hospedagem:**  
-  - **Frontend:** Vercel
-  - **Backend:** Render  
-  - **Banco de Dados:** Supabase  
+As principais dependências do projeto incluem:
 
----
+- **Frontend**:
+  - Angular
+  - Axios
+  - RxJS
 
-## 2️⃣ Autenticação e Controle de Acesso  
+- **Backend**:
+  - NestJS
+  - Prisma
+  - PostgreSQL
 
-### 2.1 Métodos de Autenticação  
+## Scripts Disponíveis
 
-- Login via **e-mail e senha**  
-- Armazenamento seguro do **refresh token em HttpOnly cookies**  
+No arquivo `package.json`, os seguintes scripts estão disponíveis:
 
-### 2.2 Níveis de Acesso  
+- **Frontend**:
+  - `start`: Inicia a aplicação em modo de desenvolvimento.
+  - `build`: Compila a aplicação para produção.
+  - `test`: Executa os testes unitários.
 
-- **Admin:** Controle total do sistema  
-- **Diretor:** Controle total do sistema, exceto cadastro de usuários  
-- **Secretaria:** Administra documentos e registros  
-- **Tesoureiro:** Controle financeiro  
-- **Instrutor:** Gerencia especialidades e classes  
-- **Conselheiro:** Acesso somente ao gerenciamento da unidade  
+- **Backend**:
+  - `start`: Inicia a aplicação.
+  - `start:dev`: Inicia a aplicação em modo de desenvolvimento.
+  - `build`: Compila a aplicação.
+  - `test`: Executa os testes.
+  - `test:e2e`: Executa os testes end-to-end.
+  - `lint`: Executa o linter.
 
----
+## Configurações do VSCode
 
-## 3️⃣ Gestão de Usuários (**somente o admin deve ter acesso.**)
+O projeto inclui configurações específicas para o VSCode:
 
-### 3.1 Funcionalidades  
+- **extensions.json**: Recomendações de extensões.
+- **launch.json**: Configurações de lançamento para depuração.
+- **tasks.json**: Tarefas automatizadas.
 
-- ✅ Cadastro, edição e exclusão de usuários   
-- ✅ Atribuição de níveis de acesso  
-- ✅ Histórico de atividades do usuário  
+## Estilos
 
----
+Os estilos são definidos utilizando SCSS e estão localizados em `src/styles.scss` e nos arquivos de estilo específicos dos componentes.
 
-## 4️⃣ Gestão de Membros do Clube  
+## Configuração do TypeScript
 
-### 4.1 Funcionalidades  
+As configurações do TypeScript estão definidas nos arquivos `tsconfig.json`, `tsconfig.app.json` e `tsconfig.spec.json`.
 
-- ✅ Cadastro de desbravadores e vinculação a uma unidade  
-- ✅ Histórico de especialidades e classes concluídas  
-- ✅ Relatórios sobre progresso dos membros  
+## EditorConfig
 
----
+O projeto inclui um arquivo `.editorconfig` para manter a consistência de estilo de código entre diferentes editores.
 
-## 5️⃣ Gestão Financeira  
+## Gitignore
 
-### 5.1 Controle de Mensalidades  
+O arquivo `.gitignore` está configurado para ignorar arquivos e diretórios desnecessários, como `node_modules` e arquivos de log.
 
-- ✅ Registro de mensalidades pagas e pendentes  
-- ✅ Notificações automáticas via **WhatsApp** sobre pagamentos
-- ✅ Relatórios financeiros detalhados  
+## Como Executar
 
-### 5.2 Controle de Custos e Caixa  
+Para executar o projeto localmente, siga os passos abaixo:
 
-- ✅ Registro de despesas e receitas do clube  
-- ✅ Fluxo de caixa detalhado  
-- ✅ Gráficos de análise financeira  
+### Frontend
 
----
+1. Instale as dependências:
 
-## 6️⃣ Gestão de Unidades, Classes e Especialidades  
+   ```bash
+   npm install
+   ```
 
-### 6.1 Funcionalidades  
+2. Inicie a aplicação:
 
-- ✅ Cadastro e gerenciamento de **unidades** do clube  
-- ✅ Acompanhamento de **classes progressivas**  
-- ✅ Relatórios sobre especialidades concluídas  
+   ```bash
+   npm start
+   ```
 
----
+3. Acesse a aplicação em `http://localhost:4200`.
 
-## 7️⃣ Gestão de Eventos e Saídas  
+### Backend
 
-### 7.1 Funcionalidades  
+1. Instale as dependências:
 
-- ✅ Cadastro de eventos e participantes  
-- ✅ Relatórios de **autorização de saída** assinadas  
-- ✅ Notificações via **WhatsApp** sobre eventos  
+   ```bash
+   npm install
+   ```
 
----
+2. Configure as variáveis de ambiente:
+   Crie um arquivo `.env` na raiz do projeto com base no arquivo `.env.example` e preencha as variáveis necessárias.
 
-## 8️⃣ Gestão de Documentos  
+3. Execute as migrações do Prisma:
 
-### 8.1 Livro de Atas e Atos  
+   ```bash
+   npx prisma migrate dev
+   ```
 
-- ✅ Cadastro e consulta de atas de reuniões  
-- ✅ Exportação de atas para PDF  
+4. Inicie a aplicação:
 
-### 8.2 Relatórios de Autorizações de Saída  
+   ```bash
+   npm run start:dev
+   ```
 
-- ✅ Registro de autorizações assinadas pelos responsáveis  
-- ✅ Identificação de pendências  
+## Autor
 
----
-
-## 9️⃣ Gestão de Patrimônio  
-
-- ✅ Cadastro e rastreamento de bens do clube  
-- ✅ Controle do estado de conservação e movimentação  
-- ✅ Relatórios detalhados de patrimônio  
-
----
-
-## 🔟 Relatórios e Dashboards  
-
-**Relatórios disponíveis:**  
-- ✔ Relatório de **unidades, classes e especialidades**  
-- ✔ Relatório **financeiro** (mensalidades e fluxo de caixa)  
-- ✔ Relatório de **eventos e autorizações de saída**  
-- ✔ Relatório de **patrimônio e bens cadastrados**  
-
----
-
-## 📡 Integrações e Automação  
-
-- ✅ **WhatsApp:** Notificações automáticas  
-- ✅ **API RESTful:** Integração com outros sistemas  
-- ✅ **Exportação de dados** em PDF  
-
----
-
-## 🛠 Futuras Melhorias  
-
-- 🛠 **Dashboard interativo** com estatísticas do clube.
-- 🛠 **Gestão de trilhas e acampamentos.**  
-- 🛠 **Sistema de pontuação para gamificação.**
-- 🛠 **Integração com o WhatsApp** para avisos aos membros.
+- Desenvolvido por: Edilson Segundo.
