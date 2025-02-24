@@ -4,9 +4,9 @@ Este repositório contém o frontend e o backend do projeto SelvaSYS, uma aplica
 
 ## Sobre o SelvaSYS
 
-O SelvaSYS é um projeto voluntário feito para o clube de desbravadores da Igreja Adventista do Sétimo Dia Planalto 1 de Natal-RN, Reino Selvagem. O projeto trata de um sistema ERP que auxília na gestão do clube Reino Selvagem como um todo. Nele é possível administrar os membros do clube, unidades, classes, especialidades, secretária, finanças, patrimônio, eventos e ranking de unidades. Além disso o SelvaSYS contém com um módulo exclusivo para o administrador do sistema (que será o próprio desenvolvedor), para administrar os usuários dele. Cada usuário acessará o sistema com o email e senha cadastrado e terá um nível de acesso que controlará quais módulos ele poderá acessar.
+O SelvaSYS é um projeto voluntário feito para o clube de desbravadores da Igreja Adventista do Sétimo Dia de Planalto 1 do município de Natal-RN, Reino Selvagem. O projeto trata-se de um sistema ERP que auxília na gestão do clube Reino Selvagem como um todo. Nele é possível administrar os membros do clube, unidades, classes, especialidades, secretária, finanças, patrimônio, eventos e ranking de unidades. Além disso o SelvaSYS contém um módulo exclusivo para o administrador do sistema (que será o próprio desenvolvedor), para administrar os usuários dele. Cada usuário acessará o sistema com o email e senha cadastrado e terá um nível de acesso que controlará quais módulos ele poderá acessar.
 
-### níveis de acesso
+### Níveis de Acesso
 
 - **Admin:** Acesso total ao sistema.
 - **Diretor:** Acesso total ao sistema, exceto o painel de usuário.
