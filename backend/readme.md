@@ -63,3 +63,7 @@ Este é o backend do projeto Selva Sys, desenvolvido com [NestJS](https://nestjs
 ## Licença
 
 Este projeto está licenciado sob a licença MIT.
+
+## Autoria
+
+Desenvolvido por: Edilson Segundo
