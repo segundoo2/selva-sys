@@ -5,18 +5,18 @@ import axios from 'axios';
   providedIn: 'root'
 })
 export class LoginService {
-  private apiUrl = 'https://localhost:3000/'
+  private apiUrl = 'http://localhost:3000/'
 
   async login(email:string, password: string): Promise<any> {
     try {
       const response = await axios.post(
-        this.apiUrl,
+        `${this.apiUrl}auth/login`,
         { email, password },
         { withCredentials: true }
       );
-      console.log('Login feito com sucesso!');
+      alert('Login efetuado com sucesso!');
     } catch (err: any) {
-      console.error('Erro no login:', err.response?.data || err.message)
+      throw err;
     }
   }
 }

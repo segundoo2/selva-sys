@@ -23,7 +23,7 @@ export class FormLoginComponent {
       ],
       password: [
         '',
-        [Validators.required, Validators.minLength(6), Validators.maxLength(10)]
+        [Validators.required, Validators.minLength(6), Validators.maxLength(30)]
       ]
     });
   }
@@ -36,15 +36,19 @@ export class FormLoginComponent {
     this.showPassword = !this.showPassword;
   }
 
-  email = '';
-  password = '';
-
   async onLogin() {
-    try {
-      const result = await this.loginService.login(this.email, this.password);
-    } catch(err: any) {
-      alert('Erro ao fazer login. Verifique suas credênciais.');
-    }
+  if (this.loginForm.invalid) {
+    alert('Por favor, preencha todos os campos corretamente.');
+    return;
   }
 
+
+    const { email, password } = this.loginForm.value
+
+    try {
+      const result = await this.loginService.login(email, password);
+    } catch(err: any) {
+      alert('[ERRO] Email ou senha inválidos!');
+    }
+  }
 }

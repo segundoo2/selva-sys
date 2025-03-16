@@ -1,4 +1,10 @@
-import { IsEmail, IsIn, IsNotEmpty, MinLength } from 'class-validator';
+import {
+  IsEmail,
+  IsIn,
+  IsNotEmpty,
+  MaxLength,
+  MinLength,
+} from 'class-validator';
 import { EErrors } from 'src/enum/errors.enum';
 
 export class CreateUserDto {
@@ -14,5 +20,6 @@ export class CreateUserDto {
   email: string;
 
   @MinLength(6, { message: EErrors.PASSWORD_LENGTH })
+  @MaxLength(20, { message: EErrors.PASSWORD_LENGTH })
   password: string;
 }
