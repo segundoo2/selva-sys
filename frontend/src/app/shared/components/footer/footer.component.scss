@@ -8,9 +8,14 @@ footer {
   gap: 1vh;
   margin-top: 1.5vh;
 
-  small {
+  small, a {
     font-size: 1.2vw;
     color: #a1a1a1;
+
+    a {
+      color: #976cfa;
+      text-decoration: none;
+    }
   }
 
   @media (max-width: 1024px) {
@@ -18,7 +23,8 @@ footer {
     gap: 1vh;
     margin-top: 0.3vh;
 
-    small {
+    small,
+    a {
       font-size: 2vw;
     }
   }
@@ -27,9 +33,9 @@ footer {
     height: 20vh;
     margin-top: 1vh;
 
-    small {
+    small,
+    a {
       font-size: 4vw;
     }
   }
 }
-
