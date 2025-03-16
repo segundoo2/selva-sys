@@ -1,6 +1,6 @@
 <main>
   <section class="form-container">
-    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+    <form [formGroup]="loginForm" (ngSubmit)="onLogin()">
       <!-- email -->
       <div class="email">
         <label for="email">Email</label>
@@ -82,7 +82,9 @@
         <small>Esqueceu a senha? <a href="#">Clique aqui</a></small>
       </div>
 
-      <div class="button-submit"><button type="submit" [disabled]="loginForm.invalid">Entrar</button></div>
+      <div class="button-submit">
+        <button type="submit" [disabled]="loginForm.invalid">Entrar</button>
+      </div>
     </form>
   </section>
 </main>

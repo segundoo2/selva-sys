@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, AbstractControl } from '@angular/forms';
+import { LoginService } from '../login.service';
 
 @Component({
   selector: 'app-form-login',
@@ -12,7 +13,7 @@ export class FormLoginComponent {
   isLoading = false;
   showPassword = false;
 
-  constructor(private fb: FormBuilder) {}
+  constructor(private fb: FormBuilder, private loginService: LoginService) {}
 
   ngOnInit() {
     this.loginForm = this.fb.group({
@@ -20,7 +21,7 @@ export class FormLoginComponent {
       password: ['', Validators.required, Validators.minLength(6), Validators.maxLength(10)]
     });
   }
-  
+
   get formControls(): { [key: string]: AbstractControl } {
     return this.loginForm.controls
   }
@@ -29,16 +30,15 @@ export class FormLoginComponent {
     this.showPassword = !this.showPassword;
   }
 
-  onSubmit(): void {
-    if (this.loginForm.valid) {
-      const { email,password } = this.loginForm.value;
-      console.log('Dados enviados:', { email, password });
+  email = '';
+  password = '';
 
-      setTimeout(() => {
-        this.isLoading = false;
-      }, 2000);
+  async onLogin() {
+    try {
+      const result = await this.loginService.login(this.email, this.password);
+    } catch(err: any) {
+      alert('Erro ao fazer login. Verifique suas credênciais.');
     }
-    this.loginForm.markAllAsTouched();
   }
 
 }
