@@ -9,7 +9,12 @@ export class LoginService {
 
   async login(email:string, password: string): Promise<any> {
     try {
-      const response = await axios.post(this.apiUrl, { email, password }, { withCredentials: true });
+      const response = await axios.post(
+        this.apiUrl,
+        { email, password },
+        { withCredentials: true }
+      );
+      console.log('Login feito com sucesso!');
     } catch (err: any) {
       console.error('Erro no login:', err.response?.data || err.message)
     }

@@ -51,6 +51,7 @@
             type="button"
             class="toggle-password"
             (click)="togglePasswordVisibility()"
+            [attr.aria-pressed]="showPassword"
             aria-label="Alternar visualização da senha"
           >
             <i [ngClass]="showPassword ? 'fas fa-eye' : 'fas fa-eye-slash'"></i>
@@ -68,11 +69,11 @@
           A senha é obrigatória.
         </small>
 
-        <small *ngIf="formControls['password'].errors?.['minLength']">
+        <small *ngIf="formControls['password'].errors?.['minlength']">
           A senha deve ter no mínimo 6 caracteres.
         </small>
 
-        <small *ngIf="formControls['password'].errors?.['maxLength']">
+        <small *ngIf="formControls['password'].errors?.['maxlength']">
           A senha deve ter no máximo 10 caracteres.
         </small>
       </div>
@@ -83,7 +84,7 @@
       </div>
 
       <div class="button-submit">
-        <button type="submit" [disabled]="loginForm.invalid">Entrar</button>
+        <button type="submit" [disabled]="loginForm.invalid || loginForm.pristine">Entrar</button>
       </div>
     </form>
   </section>
