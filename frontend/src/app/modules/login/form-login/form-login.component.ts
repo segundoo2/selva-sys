@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, AbstractControl } from '@angular/forms';
+import { LoginService } from '../login.service';
 
 @Component({
   selector: 'app-form-login',
@@ -12,15 +13,21 @@ export class FormLoginComponent {
   isLoading = false;
   showPassword = false;
 
-  constructor(private fb: FormBuilder) {}
+  constructor(private fb: FormBuilder, private loginService: LoginService) {}
 
   ngOnInit() {
     this.loginForm = this.fb.group({
-      email: ['', [Validators.required, Validators.email]],
-      password: ['', Validators.required, Validators.minLength(6), Validators.maxLength(10)]
+      email: [
+        '',
+        [Validators.required, Validators.email]
+      ],
+      password: [
+        '',
+        [Validators.required, Validators.minLength(6), Validators.maxLength(20)]
+      ]
     });
   }
-  
+
   get formControls(): { [key: string]: AbstractControl } {
     return this.loginForm.controls
   }
@@ -29,16 +36,19 @@ export class FormLoginComponent {
     this.showPassword = !this.showPassword;
   }
 
-  onSubmit(): void {
-    if (this.loginForm.valid) {
-      const { email,password } = this.loginForm.value;
-      console.log('Dados enviados:', { email, password });
-
-      setTimeout(() => {
-        this.isLoading = false;
-      }, 2000);
-    }
-    this.loginForm.markAllAsTouched();
+  async onLogin() {
+  if (this.loginForm.invalid) {
+    alert('Por favor, preencha todos os campos corretamente.');
+    return;
   }
 
+
+    const { email, password } = this.loginForm.value
+
+    try {
+      const result = await this.loginService.login(email, password);
+    } catch(err: any) {
+      alert('[ERRO] Email ou senha inválidos!');
+    }
+  }
 }

@@ -10,7 +10,7 @@ export enum EErrors {
   ROLE_INVALID = 'Nível de acesso inválido.',
   EMAIL_INVALID = 'Email inválido.',
   EMAIL_EXIST = 'Este email já está em uso.',
-  PASSWORD_LENGTH = 'A senha deve ter no mínimo 6 caracter.',
+  PASSWORD_LENGTH = 'A senha deve ter de 6 a 20 caracter.',
   CSRF_INVALID = 'CSRF token inválido',
   ACCESS_TOKEN_INVALID = 'Token de acesso inválido.',
   REFRESH_TOKEN_INVALID = 'Refresh token inválido.',

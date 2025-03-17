@@ -54,7 +54,12 @@ export class AuthService {
       maxAge: 7 * 24 * 60 * 1000,
       sameSite: 'strict',
     });
+
+    return res.json({
+      message: 'Login feito com sucesso!',
+    });
   }
+
   async validateUser(email: string, password: string): Promise<any> {
     const user = await this.authRepository.findByEmail(email);
 
