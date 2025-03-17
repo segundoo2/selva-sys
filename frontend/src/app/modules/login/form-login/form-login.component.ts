@@ -23,7 +23,7 @@ export class FormLoginComponent {
       ],
       password: [
         '',
-        [Validators.required, Validators.minLength(6), Validators.maxLength(30)]
+        [Validators.required, Validators.minLength(6), Validators.maxLength(20)]
       ]
     });
   }
