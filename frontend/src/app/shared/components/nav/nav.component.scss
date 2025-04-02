@@ -1,0 +1,61 @@
+.navbar-container {
+  background-color: #f6f6f6dd;
+  border-radius: 0 15vw 0 0;
+  height: 100%;
+  width: 20%;
+  padding-bottom: 10%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+
+  nav {
+    position: relative;
+    top: 37%;
+    bottom: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 2vw;
+    margin-left: 3vw;
+    height: 10vh;
+
+    a {
+      text-decoration: none;
+      color: #ca9d2a;
+      font-size: 1.76vw;
+    }
+
+    #logout {
+      color: rgb(255, 0, 0) !important;
+    }
+  }
+
+  #username {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-top: 10vh;
+    margin-right: 5vh;
+
+    img {
+      height: 15vh;
+      width: 15vh;
+      margin: auto;
+    }
+
+    p {
+      margin-top: 1.5vh;
+      font-size: 1.5vw;
+    }
+
+    small {
+      font-size: 1.2vw;
+    }
+
+
+  }
+}
