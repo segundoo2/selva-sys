@@ -4,7 +4,7 @@ import {
   Injectable,
   CanActivate,
 } from '@nestjs/common';
-import { EErrors } from 'src/enum/errors.enum';
+import { EErrors } from '@/enum/errors.enum';
 
 @Injectable()
 export class CsrfGuard implements CanActivate {

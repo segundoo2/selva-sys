@@ -5,7 +5,7 @@ import {
   CanActivate,
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { EErrors } from 'src/enum/errors.enum';
+import { EErrors } from '@/enum/errors.enum';
 
 @Injectable()
 export class AccessTokenGuard implements CanActivate {

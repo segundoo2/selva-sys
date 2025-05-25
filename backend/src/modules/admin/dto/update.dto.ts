@@ -1,5 +1,5 @@
 import { IsEmail, IsOptional, IsString, MinLength } from 'class-validator';
-import { EErrors } from 'src/enum/errors.enum';
+import { EErrors } from '@/enum/errors.enum';
 
 export class UpdateUserDto {
   @IsOptional()
@@ -19,5 +19,6 @@ export class UpdateUserDto {
 
   @IsOptional()
   @IsString({ message: EErrors.EMPTY_FIELD })
+  @MinLength(2, { message: EErrors.ROLE_INVALID })
   role?: string;
 }

@@ -5,7 +5,7 @@ import {
   MaxLength,
   MinLength,
 } from 'class-validator';
-import { EErrors } from 'src/enum/errors.enum';
+import { EErrors } from '@/enum/errors.enum';
 
 export class CreateUserDto {
   @IsIn(['admin', 'diretor', 'secretario', 'tesoureiro', 'instrutor'], {

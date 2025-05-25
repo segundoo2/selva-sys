@@ -4,12 +4,12 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { EErrors } from 'src/enum/errors.enum';
+import { EErrors } from '@/enum/errors.enum';
 import * as crypto from 'crypto';
 import * as bcrypt from 'bcrypt';
 import { AuthRepository } from './auth.repository';
 import { AuthDto } from './dto/auth.dto';
-import { setCookies } from 'src/util/set-cookies.util';
+import { setCookies } from '@/util/set-cookies.util';
 
 @Injectable()
 export class AuthService {

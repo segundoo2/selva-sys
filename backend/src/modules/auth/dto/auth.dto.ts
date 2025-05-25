@@ -1,5 +1,5 @@
 import { IsEmail, MinLength } from 'class-validator';
-import { EErrors } from 'src/enum/errors.enum';
+import { EErrors } from '@/enum/errors.enum';
 
 export class AuthDto {
   @IsEmail({}, { message: EErrors.EMAIL_INVALID })
