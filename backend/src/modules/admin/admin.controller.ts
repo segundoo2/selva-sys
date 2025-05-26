@@ -17,12 +17,26 @@ import { ResetPasswordDto } from './dto/resetPassword.dto';
 import { CsrfGuard } from '../auth/guards/csrf.guard';
 import { RolesGuard } from '../auth/guards/roles.guard';
 import { Roles } from '../auth/decorators/role.decorator';
+import {
+  ApiTags,
+  ApiOperation,
+  ApiResponse,
+  ApiBearerAuth,
+  ApiParam,
+  ApiQuery,
+} from '@nestjs/swagger';
 
+@ApiTags('Administração')
+@ApiBearerAuth()
 @Controller('admin')
 export class AdminController {
   constructor(private readonly adminService: AdminService) {}
 
   @Post('create')
+  @ApiOperation({ summary: 'Criar novo usuário' })
+  @ApiResponse({ status: 201, description: 'Usuário criado com sucesso' })
+  @ApiResponse({ status: 400, description: 'Dados inválidos' })
+  @ApiResponse({ status: 403, description: 'Acesso negado' })
   @Roles('admin')
   @UseGuards(CsrfGuard, RolesGuard)
   async createUser(@Body() createUserDto: CreateUserDto) {
@@ -35,6 +49,17 @@ export class AdminController {
   }
 
   @Get()
+  @ApiOperation({ summary: 'Listar todos os usuários' })
+  @ApiQuery({
+    name: 'email',
+    required: false,
+    description: 'Filtrar por email',
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'Lista de usuários retornada com sucesso',
+  })
+  @ApiResponse({ status: 403, description: 'Acesso negado' })
   @Roles('admin')
   @UseGuards(CsrfGuard, RolesGuard)
   async findAllUsers(@Query('email') email?: string) {
@@ -42,6 +67,12 @@ export class AdminController {
   }
 
   @Put(':id')
+  @ApiOperation({ summary: 'Atualizar usuário' })
+  @ApiParam({ name: 'id', description: 'ID do usuário' })
+  @ApiResponse({ status: 200, description: 'Usuário atualizado com sucesso' })
+  @ApiResponse({ status: 400, description: 'Dados inválidos' })
+  @ApiResponse({ status: 403, description: 'Acesso negado' })
+  @ApiResponse({ status: 404, description: 'Usuário não encontrado' })
   @Roles('admin')
   @UseGuards(CsrfGuard, RolesGuard)
   async updateUser(
@@ -57,6 +88,12 @@ export class AdminController {
   }
 
   @Patch(':id')
+  @ApiOperation({ summary: 'Resetar senha do usuário' })
+  @ApiParam({ name: 'id', description: 'ID do usuário' })
+  @ApiResponse({ status: 200, description: 'Senha atualizada com sucesso' })
+  @ApiResponse({ status: 400, description: 'Dados inválidos' })
+  @ApiResponse({ status: 403, description: 'Acesso negado' })
+  @ApiResponse({ status: 404, description: 'Usuário não encontrado' })
   @Roles('admin')
   @UseGuards(CsrfGuard, RolesGuard)
   async resetPassword(
@@ -72,6 +109,11 @@ export class AdminController {
   }
 
   @Delete(':id')
+  @ApiOperation({ summary: 'Deletar usuário' })
+  @ApiParam({ name: 'id', description: 'ID do usuário' })
+  @ApiResponse({ status: 200, description: 'Usuário deletado com sucesso' })
+  @ApiResponse({ status: 403, description: 'Acesso negado' })
+  @ApiResponse({ status: 404, description: 'Usuário não encontrado' })
   @Roles('admin')
   @UseGuards(CsrfGuard, RolesGuard)
   async deleteUser(@Param('id') id: string) {

@@ -3,6 +3,7 @@ import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
 import * as cookieParser from 'cookie-parser';
 import helmet from 'helmet';
+import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -13,6 +14,16 @@ async function bootstrap() {
     }),
   );
   app.use(cookieParser());
+
+  // Configuração do Swagger
+  const config = new DocumentBuilder()
+    .setTitle('Selva System API')
+    .setDescription('Documentação da API do Sistema Selva')
+    .setVersion('1.0')
+    .addBearerAuth()
+    .build();
+  const document = SwaggerModule.createDocument(app, config);
+  SwaggerModule.setup('api', app, document);
 
   app.use(
     helmet({
