@@ -1,6 +1,5 @@
 import { PrismaClient } from '@prisma/client';
 
-// Cliente para operações de leitura
 export const prismaReader = new PrismaClient({
   datasources: {
     db: {
@@ -9,7 +8,6 @@ export const prismaReader = new PrismaClient({
   },
 });
 
-// Cliente para operações de escrita
 export const prismaWriter = new PrismaClient({
   datasources: {
     db: {
@@ -18,7 +16,6 @@ export const prismaWriter = new PrismaClient({
   },
 });
 
-// Cliente para operações de deleção
 export const prismaDeleter = new PrismaClient({
   datasources: {
     db: {
