@@ -6,11 +6,13 @@ import { AuthModule } from './modules/auth/auth.module';
 import { ConfigModule } from '@nestjs/config';
 import { JwtModule } from '@nestjs/jwt';
 import { PrismaModule } from './modules/prisma/prisma.module';
+import { CadastroDbvModule } from './modules/cadastro-dbv/cadastro-dbv.module';
 
 @Module({
   imports: [
     AdminModule,
     AuthModule,
+    CadastroDbvModule,
     ConfigModule.forRoot({
       isGlobal: true,
     }),

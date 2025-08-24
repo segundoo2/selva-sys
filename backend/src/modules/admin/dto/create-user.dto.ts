@@ -5,7 +5,7 @@ import {
   MaxLength,
   MinLength,
 } from 'class-validator';
-import { EErrors } from '@/enum/errors.enum';
+import { EErrors } from '../../../enum/errors.enum';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class CreateUserDto {

@@ -1,4 +1,4 @@
-import { CookieOptions } from 'src/interface/cookie.inteface';
+import { CookieOptions } from '../interface/cookie.inteface';
 import { Response } from 'express';
 
 export function setCookies(res: Response, cookies: CookieOptions[]) {

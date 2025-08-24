@@ -14,3 +14,26 @@ model User {
   email    String @unique
   password String
 }
+
+model CadastroDbv {
+  id                  String   @id @default(uuid())
+  nome                String
+  idade               Int
+  cpf                 String   @unique
+  rg                  String   @unique
+  cargo               String
+  unidade             String
+  classes             String[]
+  especialidades      String[]
+  nomeResponsavel     String
+  telefoneResponsavel String
+  rua                 String
+  numero              String
+  bairro              String
+  cidade              String
+  estado              String
+  cep                 String
+  observacao          String?
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
+}
