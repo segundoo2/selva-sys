@@ -4,19 +4,17 @@ import {
   Injectable,
   CanActivate,
 } from '@nestjs/common';
-import { EErrors } from '@/enum/errors.enum';
+import { EErrors } from '../../../enum/errors.enum';
 
 @Injectable()
 export class CsrfGuard implements CanActivate {
-  constructor(
-    private readonly headerName: string = 'x-csrf-token',
-    private readonly cookieName: string = 'csrf_token'
-  ) {}
+
+  private readonly cookieName = 'csrfToken';
 
   canActivate(context: ExecutionContext): boolean {
     const request = context.switchToHttp().getRequest();
-    const csrfTokenHeaders =
-      request.headers[this.headerName]
+    const csrfToken =
+      request.headers['x-csrf-token'];
 
     if (!csrfToken) {
       throw new ForbiddenException(EErrors.CSRF_INVALID);
