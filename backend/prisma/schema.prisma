@@ -19,6 +19,7 @@ model User {
 
 model CadastroDbv {
   id                  String   @id @default(uuid())
+  matricula           Int   @unique
   nome                String
   idade               Int
   cpf                 String   @unique
