@@ -32,14 +32,14 @@ export class CadastroDbvController {
 
   @Roles('admin', 'diretor', 'secretario')
   @UseGuards(CsrfGuard, RolesGuard)
-  @Put(':matricula')
+  @Put('/atualizar/:matricula')
   async updateDbvByMatricula(@Param('matricula') matricula: number, @Body() updateCadastroDbvDto: CreateCadastroDbvDto) {
     return this.cadastroDbvService.updateDbvByMatricula(matricula, updateCadastroDbvDto);
   }
 
   @Roles('admin', 'diretor', 'secretario')
   @UseGuards(CsrfGuard, RolesGuard)
-  @Delete(':matricula')
+  @Delete('/deletar/:matricula')
   async deleteDbvByMatricula(@Param('matricula') matricula: number) {
     return this.cadastroDbvService.deleteDbvByMatricula(matricula);
   }

@@ -1,6 +1,6 @@
 # Selva Sys Backend
 
-Este é o backend do projeto Selva Sys, desenvolvido com [NestJS](https://nestjs.com/) e [Prisma](https://www.prisma.io/).
+Este é o backend do projeto SelvaSYS, desenvolvido com [NestJS](https://nestjs.com/) e [Prisma](https://www.prisma.io/).
 
 ## Requisitos
 
@@ -36,7 +36,7 @@ Este é o backend do projeto Selva Sys, desenvolvido com [NestJS](https://nestjs
 - `npm run start`: Inicia a aplicação.
 - `npm run start:dev`: Inicia a aplicação em modo de desenvolvimento.
 - `npm run build`: Compila a aplicação.
-- `npm run test`: Executa os testes.
+- `npm run test:cov`: Executa os testes com cobertura.
 - `npm run test:e2e`: Executa os testes end-to-end.
 - `npm run lint`: Executa o linter.
 

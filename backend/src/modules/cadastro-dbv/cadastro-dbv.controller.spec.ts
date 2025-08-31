@@ -1,5 +1,4 @@
 import { CadastroDbvController } from './cadastro-dbv.controller';
-import { CadastroDbvService } from './cadastro-dbv.service';
 import { BadRequestException } from '@nestjs/common';
 
 describe('CadastroDbvController', () => {

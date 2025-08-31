@@ -3,15 +3,15 @@ import { PrismaClient } from '@prisma/client';
 
 @Injectable()
 export class PrismaService implements OnModuleInit, OnModuleDestroy {
-  private readonly readClient: PrismaClient;
+  private readonly readerClient: PrismaClient;
   private readonly writeClient: PrismaClient;
   private readonly deleteClient: PrismaClient;
 
   constructor() {
-    this.readClient = new PrismaClient({
+    this.readerClient = new PrismaClient({
       datasources: {
         db: {
-          url: process.env.DATABASE_URL_READ,
+          url: process.env.DATABASE_URL_READER,
         },
       },
     });
@@ -34,19 +34,19 @@ export class PrismaService implements OnModuleInit, OnModuleDestroy {
   }
 
   async onModuleInit() {
-    await this.readClient.$connect();
+    await this.readerClient.$connect();
     await this.writeClient.$connect();
     await this.deleteClient.$connect();
   }
 
   async onModuleDestroy() {
-    await this.readClient.$disconnect();
+    await this.readerClient.$disconnect();
     await this.writeClient.$disconnect();
     await this.deleteClient.$disconnect();
   }
 
-  get read() {
-    return this.readClient;
+  get reader() {
+    return this.readerClient;
   }
 
   get write() {

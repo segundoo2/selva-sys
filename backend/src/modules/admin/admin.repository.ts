@@ -6,7 +6,7 @@ import {
 } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update.dto';
-import { EErrors } from '@/enum/errors.enum';
+import { EErrors } from '../../enum/errors.enum';
 import { PrismaService } from '../prisma/prisma.service';
 
 @Injectable()
@@ -15,7 +15,7 @@ export class AdminRepository {
 
   async createUser(createUserDto: CreateUserDto) {
     try {
-      const existingEmail = await this.prisma.read.user.findUnique({
+      const existingEmail = await this.prisma.reader.user.findUnique({
         where: { email: createUserDto.email },
       });
 
@@ -40,7 +40,7 @@ export class AdminRepository {
   }
 
   async findAllUsers(where) {
-    return this.prisma.read.user.findMany({
+    return this.prisma.reader.user.findMany({
       where,
       select: {
         id: true,
@@ -52,7 +52,7 @@ export class AdminRepository {
   }
 
   async verifyUserExist(id: string) {
-    const user = await this.prisma.read.user.findUnique({
+    const user = await this.prisma.reader.user.findUnique({
       where: { id },
     });
 
