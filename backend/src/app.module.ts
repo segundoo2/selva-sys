@@ -7,6 +7,8 @@ import { ConfigModule } from '@nestjs/config';
 import { JwtModule } from '@nestjs/jwt';
 import { PrismaModule } from './modules/prisma/prisma.module';
 import { CadastroDbvModule } from './modules/cadastro-dbv/cadastro-dbv.module';
+import { CadastroUnidadeModule } from './cadastro-unidade/cadastro-unidade.module';
+import { CadastroUnidadeModule } from './modules/cadastro-unidade/cadastro-unidade.module';
 
 @Module({
   imports: [
@@ -18,6 +20,7 @@ import { CadastroDbvModule } from './modules/cadastro-dbv/cadastro-dbv.module';
     }),
     JwtModule.register({}),
     PrismaModule,
+    CadastroUnidadeModule,
   ],
   controllers: [AppController],
   providers: [AppService],
