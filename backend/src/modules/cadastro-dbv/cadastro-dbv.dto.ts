@@ -1,4 +1,4 @@
-import { IsInt, IsNegative, IsNotEmpty, IsOptional, IsString, Min } from "class-validator";
+import { ArrayMinSize, IsArray, IsInt, IsNegative, IsNotEmpty, IsOptional, IsPositive, IsString, Min } from "class-validator";
 
 export default class CreateCadastroDbvDto {
 
@@ -31,7 +31,14 @@ export default class CreateCadastroDbvDto {
   @IsNotEmpty({ message: 'Unidade não pode ser vazia.' })
   unidade:             string;
 
+  @IsArray()
+  @ArrayMinSize(1)
+  @IsString({ each: true })
   classes?:            string[];
+
+  @IsArray()
+  @ArrayMinSize(1)
+  @IsString({ each: true }) 
   especialidades?:     string[];
 
   @IsString({ message: 'Nome do responsável é obrigatório.' })
@@ -48,7 +55,7 @@ export default class CreateCadastroDbvDto {
 
   @IsInt({ message: 'Número é obrigatório.' })
   @IsNotEmpty({ message: 'Número não pode ser vazio.' })
-  @IsNegative({ message: 'Número deve ser positivo.' })
+  @IsPositive({ message: 'Número deve ser positivo.' })
   numero:              number;
 
   @IsString({ message: 'Bairro é obrigatório.' })

@@ -17,8 +17,8 @@ async function bootstrap() {
 
   // Configuração do Swagger
   const config = new DocumentBuilder()
-    .setTitle('Selva System API')
-    .setDescription('Documentação da API do Sistema Selva')
+    .setTitle('SelvaSYS API')
+    .setDescription('Documentação da API do SelvaSYS')
     .setVersion('1.0')
     .addBearerAuth()
     .build();

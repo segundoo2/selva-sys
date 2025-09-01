@@ -10,9 +10,12 @@ export class CadastroDbvRepository {
     if (!createCadastroDbvDto) {
       throw new BadRequestException('Dados inválidos.');
     }
-    return await this.prisma.write.cadastroDbv.create({
+    const result = await this.prisma.write.cadastroDbv.create({
       data: createCadastroDbvDto,
     });
+
+    console.log(result.classes, '--- classes ---', result.especialidades, '--- especialidades ---');
+    return result;
   }
 
   async findDbvByMatricula(matricula: number) {
@@ -21,20 +24,37 @@ export class CadastroDbvRepository {
     });
   }
 
+
+  async findDbvByCpf(cpf: string) {
+    return await this.prisma.reader.cadastroDbv.findUnique({
+      where: { cpf },
+    });
+  }
+
+  async findDbvByRg(rg: string) {
+    return await this.prisma.reader.cadastroDbv.findUnique({
+      where: { rg },
+    });
+  }
+
   async findAllDbvs() {
-    return await this.prisma.write.cadastroDbv.findMany();
+    return await this.prisma.reader.cadastroDbv.findMany();
   }
 
   async updateDbvByMatricula(matricula: number, updateCadastroDbvDto: CreateCadastroDbvDto) {
-    return await this.prisma.write.cadastroDbv.update({
+    await this.prisma.write.cadastroDbv.update({
       where: { matricula },
       data: updateCadastroDbvDto,
     });
+
+    return { message: `Desbravador da matrícula: ${matricula} atualizado com sucesso.`};
   }
 
   async deleteDbvByMatricula(matricula: number) {
-    return await this.prisma.write.cadastroDbv.delete({
+    await this.prisma.delete.cadastroDbv.delete({
       where: { matricula },
     });
+
+    return { message: `Desbravador da matrícula: ${matricula} deletado com sucesso.`};
   }
 }

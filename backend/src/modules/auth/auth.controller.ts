@@ -17,6 +17,7 @@ import {
   ApiResponse,
   ApiBearerAuth,
 } from '@nestjs/swagger';
+import { CsrfGuard } from './guards/csrf.guard';
 
 @ApiTags('Autenticação')
 @Controller('auth')
@@ -39,7 +40,7 @@ export class AuthController {
   })
   @ApiBearerAuth()
   @Get('validate-session')
-  @UseGuards(AccessTokenGuard)
+  @UseGuards(CsrfGuard)
   async validateSession(@Res() res: Response) {
     return res.status(200);
   }

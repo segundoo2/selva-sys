@@ -35,21 +35,21 @@ export class AuthService {
     const csrfToken = crypto.randomBytes(64).toString('hex');
 
     res.cookie('csrf_token', csrfToken, {
-      secure: true,
+      secure: false,
       httpOnly: false,
       maxAge: 7 * 24 * 60 * 1000,
       sameSite: 'strict',
     });
 
     res.cookie('access_token', accessToken, {
-      httpOnly: true,
+      httpOnly: false,
       secure: true,
       maxAge: 7 * 24 * 60 * 1000,
       sameSite: 'strict',
     });
 
     res.cookie('refresh_token', refreshToken, {
-      httpOnly: true,
+      httpOnly: false,
       secure: true,
       maxAge: 7 * 24 * 60 * 1000,
       sameSite: 'strict',

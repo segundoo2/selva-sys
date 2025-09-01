@@ -1,33 +1,29 @@
-import {
-  ExecutionContext,
-  ForbiddenException,
-  Injectable,
-  CanActivate,
-} from '@nestjs/common';
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+import { ForbiddenException, Injectable, CanActivate } from '@nestjs/common';
+import { Request } from 'express';
 import { EErrors } from '../../../enum/errors.enum';
 
 @Injectable()
 export class CsrfGuard implements CanActivate {
+  canActivate(context: import('@nestjs/common').ExecutionContext): boolean {
+    const request = context.switchToHttp().getRequest<Request>();
+    const csrfTokenHeaders = request.headers['x-csrf-token'] as
+      | string
+      | undefined;
 
-  private readonly cookieName = 'csrfToken';
-
-  canActivate(context: ExecutionContext): boolean {
-    const request = context.switchToHttp().getRequest();
-    const csrfToken =
-      request.headers['x-csrf-token'];
-
-    if (!csrfToken) {
+    if (!csrfTokenHeaders) {
       throw new ForbiddenException(EErrors.CSRF_INVALID);
     }
 
-    const csrfTokenCookie = request.cookies[this.cookieName];
+    const csrfTokenCookie = request.cookies?.['csrf_token'];
 
     if (!csrfTokenCookie) {
       throw new ForbiddenException(EErrors.CSRF_INVALID);
     }
 
-    if (csrfToken !== csrfTokenCookie) {
-      throw new ForbiddenException(EErrors.CSRF_INVALID);
+    if (csrfTokenHeaders !== csrfTokenCookie) {
+      throw new ForbiddenException(EErrors.ACCESS_DENIED);
     }
 
     return true;

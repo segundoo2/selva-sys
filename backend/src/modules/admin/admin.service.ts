@@ -11,7 +11,7 @@ export class AdminService {
   async createUser(createUserDto: CreateUserDto) {
     try {
       createUserDto.password = await bcrypt.hash(createUserDto.password, 10);
-      return this.adminRepository.createUser(createUserDto);
+      return await this.adminRepository.createUser(createUserDto);
     } catch (error) {
       throw error;
     }

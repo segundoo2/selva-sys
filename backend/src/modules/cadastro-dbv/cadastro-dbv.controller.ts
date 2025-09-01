@@ -1,4 +1,14 @@
-import { BadRequestException, Body, Controller, Delete, Get, Param, Post, Put, UseGuards } from '@nestjs/common';
+import {
+  BadRequestException,
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Patch,
+  Post,
+  UseGuards,
+} from '@nestjs/common';
 import { CadastroDbvService } from './cadastro-dbv.service';
 import CreateCadastroDbvDto from './cadastro-dbv.dto';
 import { Roles } from '../auth/decorators/role.decorator';
@@ -19,10 +29,6 @@ export class CadastroDbvController {
     return this.cadastroDbvService.createDbv(createCadastroDbvDto);
   }
 
-  async findDbvByMatricula(@Param('matricula') matricula: number) {
-    return this.cadastroDbvService.findDbvByMatricula(matricula);
-  }
-
   @Roles('admin', 'diretor', 'secretario')
   @UseGuards(CsrfGuard, RolesGuard)
   @Get('/all')
@@ -32,9 +38,22 @@ export class CadastroDbvController {
 
   @Roles('admin', 'diretor', 'secretario')
   @UseGuards(CsrfGuard, RolesGuard)
-  @Put('/atualizar/:matricula')
-  async updateDbvByMatricula(@Param('matricula') matricula: number, @Body() updateCadastroDbvDto: CreateCadastroDbvDto) {
-    return this.cadastroDbvService.updateDbvByMatricula(matricula, updateCadastroDbvDto);
+  @Get('/:matricula')
+  async findDbvByMatricula(@Param('matricula') matricula: string) {
+    return this.cadastroDbvService.findDbvByMatricula(Number(matricula));
+  }
+
+  @Roles('admin', 'diretor', 'secretario')
+  @UseGuards(CsrfGuard, RolesGuard)
+  @Patch('/atualizar/:matricula')
+  async updateDbvByMatricula(
+    @Param('matricula') matricula: number,
+    @Body() updateCadastroDbvDto: CreateCadastroDbvDto,
+  ) {
+    return this.cadastroDbvService.updateDbvByMatricula(
+      matricula,
+      updateCadastroDbvDto,
+    );
   }
 
   @Roles('admin', 'diretor', 'secretario')
@@ -43,5 +62,4 @@ export class CadastroDbvController {
   async deleteDbvByMatricula(@Param('matricula') matricula: number) {
     return this.cadastroDbvService.deleteDbvByMatricula(matricula);
   }
-
 }

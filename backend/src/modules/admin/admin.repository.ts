@@ -15,15 +15,14 @@ export class AdminRepository {
 
   async createUser(createUserDto: CreateUserDto) {
     try {
-      const existingEmail = await this.prisma.reader.user.findUnique({
+      const existingEmail = await this.prisma.reader.users.findUnique({
         where: { email: createUserDto.email },
       });
-
+      
       if (existingEmail) {
         throw new ConflictException(EErrors.EMAIL_EXIST);
       }
-
-      return this.prisma.write.user.create({
+      return await this.prisma.write.users.create({
         data: {
           role: createUserDto.role,
           name: createUserDto.name,
@@ -35,12 +34,13 @@ export class AdminRepository {
       if (error instanceof ConflictException) {
         throw error;
       }
+      console.log("IHIIIII", error);
       throw new InternalServerErrorException(EErrors.INTERNAL_ERROR);
     }
   }
 
   async findAllUsers(where) {
-    return this.prisma.reader.user.findMany({
+    return this.prisma.reader.users.findMany({
       where,
       select: {
         id: true,
@@ -52,7 +52,7 @@ export class AdminRepository {
   }
 
   async verifyUserExist(id: string) {
-    const user = await this.prisma.reader.user.findUnique({
+    const user = await this.prisma.reader.users.findUnique({
       where: { id },
     });
 
@@ -64,7 +64,7 @@ export class AdminRepository {
   async updateUser(id: string, updateUserDto: UpdateUserDto) {
     await this.verifyUserExist(id);
 
-    return this.prisma.write.user.update({
+    return this.prisma.write.users.update({
       where: { id },
       data: updateUserDto,
     });
@@ -73,7 +73,7 @@ export class AdminRepository {
   async resetPassword(id: string, passwordHashed: string) {
     await this.verifyUserExist(id);
 
-    return this.prisma.write.user.update({
+    return this.prisma.write.users.update({
       where: { id },
       data: { password: passwordHashed },
     });
@@ -82,7 +82,7 @@ export class AdminRepository {
   async deleteUser(id: string) {
     await this.verifyUserExist(id);
 
-    return await this.prisma.delete.user.delete({
+    return await this.prisma.delete.users.delete({
       where: { id },
     });
   }
