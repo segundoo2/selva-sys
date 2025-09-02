@@ -10,8 +10,55 @@ export class CadastroDbvRepository {
     if (!createCadastroDbvDto) {
       throw new BadRequestException('Dados inválidos.');
     }
+
+    const {
+      matricula,
+      nome, 
+      dataNascimento, 
+      cpf, 
+      rg, 
+      cargo, 
+      unidade, 
+      classes, 
+      especialidades, 
+      nomeResponsavel, 
+      telefoneResponsavel, 
+      rua, 
+      numero, 
+      bairro, 
+      cidade, 
+      estado, 
+      cep, 
+      observacao
+     } = createCadastroDbvDto;
+
+
+    const unidadeId = await this.prisma.reader.unidade.findUnique({
+      select: { id: true },
+      where: { nome: unidade },
+    });
+
     const result = await this.prisma.write.cadastroDbv.create({
-      data: createCadastroDbvDto,
+      data: {
+        nome,
+        matricula,
+        dataNascimento,
+        cpf,
+        rg,
+        cargo,
+        unidadeId: unidadeId.id,
+        classes,
+        especialidades,
+        nomeResponsavel,
+        telefoneResponsavel,
+        rua,
+        numero,
+        bairro,
+        cidade,
+        estado,
+        cep,
+        observacao,
+      },
     });
 
     console.log(result.classes, '--- classes ---', result.especialidades, '--- especialidades ---');
@@ -42,9 +89,52 @@ export class CadastroDbvRepository {
   }
 
   async updateDbvByMatricula(matricula: number, updateCadastroDbvDto: CreateCadastroDbvDto) {
+    const {
+      nome, 
+      dataNascimento, 
+      cpf, 
+      rg, 
+      cargo, 
+      unidade, 
+      classes, 
+      especialidades, 
+      nomeResponsavel, 
+      telefoneResponsavel, 
+      rua, 
+      numero, 
+      bairro, 
+      cidade, 
+      estado, 
+      cep, 
+      observacao
+     } = updateCadastroDbvDto;
+
+    const unidadeId = await this.prisma.reader.unidade.findUnique({
+      select: { id: true },
+      where: { nome: unidade },
+    });
+    
     await this.prisma.write.cadastroDbv.update({
       where: { matricula },
-      data: updateCadastroDbvDto,
+      data: {
+        nome,
+        dataNascimento,
+        cpf,
+        rg,
+        cargo,
+        unidadeId: unidadeId.id,
+        classes,
+        especialidades,
+        nomeResponsavel,
+        telefoneResponsavel,
+        rua,
+        numero,
+        bairro,
+        cidade,
+        estado,
+        cep,
+        observacao
+      },
     });
 
     return { message: `Desbravador da matrícula: ${matricula} atualizado com sucesso.`};

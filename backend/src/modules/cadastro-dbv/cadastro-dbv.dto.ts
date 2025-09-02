@@ -10,10 +10,9 @@ export default class CreateCadastroDbvDto {
   @IsNotEmpty({ message: 'Nome não pode ser vazio.' })
   nome:                string;
 
-  @IsInt({ message: 'Idade é obrigatória.' })
+  @IsString({ message: 'Nome é obrigatório.' })
   @IsNotEmpty({ message: 'Idade não pode ser vazia.' })
-  @Min(9, { message: 'Idade deve ser maior ou igual a 9.' })
-  idade:               number;
+  dataNascimento:               string;
 
   @IsString({ message: 'CPF é obrigatório.' })
   @IsNotEmpty({ message: 'CPF não pode ser vazio.' })
@@ -90,7 +89,7 @@ export class UpdateCadastroDbvDto {
   @IsInt({ message: 'Idade é obrigatória.' })
   @IsNotEmpty({ message: 'Idade não pode ser vazia.' })
   @Min(9, { message: 'Idade deve ser maior ou igual a 9.' })
-  idade?:               number;
+  dataNascimento?:               number;
 
   @IsString({ message: 'CPF é obrigatório.' })
   @IsNotEmpty({ message: 'CPF não pode ser vazio.' })

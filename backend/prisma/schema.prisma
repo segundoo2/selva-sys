@@ -21,7 +21,7 @@ model CadastroDbv {
   id                   String   @id @default(uuid())
   matricula            Int      @unique
   nome                 String
-  idade                Int
+  dataNascimento       String
   cpf                  String   @unique
   rg                   String   @unique
   cargo                String
