@@ -1,6 +1,6 @@
 # SelvaSYS
 
-Este repositório contém o frontend e o backend do projeto SelvaSYS, uma aplicação web desenvolvida com Angular e NestJS.
+Este repositório contém o frontend e o backend do projeto SelvaSYS, uma aplicação web desenvolvida com React e NestJS.
 
 ## Sobre o SelvaSYS
 
@@ -8,33 +8,18 @@ O SelvaSYS é um projeto voluntário feito para o clube de desbravadores da Igre
 
 ### Níveis de Acesso
 
-- **Admin:** Acesso total ao sistema.
-- **Diretor:** Acesso total ao sistema, exceto o painel de usuário.
-- **Secretário:** Acesso aos módulos membros, unidades, secretaria, finanças e patrimônio.
-- **Tesoureiro:** Acesso aos módulos de finanças e patrimônio.
-- **Instrutor:** Acesso aos módulos de classes, especialidades e ranking de unidades.
-- **Conselheiro:** Acesso aos módulos de unidades e ranking de unidades.
+- **Admin**: Acesso total ao sistema.
+- **Diretor**: Acesso total ao sistema, exceto o painel de usuário.
+- **Secretário**: Acesso aos módulos membros, unidades, secretaria, finanças e patrimônio.
+- **Tesoureiro**: Acesso aos módulos de finanças e patrimônio.
+- **Instrutor**: Acesso aos módulos de classes, especialidades e ranking de unidades.
+- **Conselheiro**: Acesso aos módulos de unidades e ranking de unidades.
 
 ## Estrutura do Projeto
 
 A estrutura do projeto é organizada da seguinte forma:
 
-- **frontend**: Contém o código fonte do frontend da aplicação.
-  - **src/app**: Contém os componentes principais da aplicação.
-    - **app.component.ts**: Componente principal da aplicação.
-    - **app.module.ts**: Módulo principal da aplicação.
-    - **app-routing.module.ts**: Configuração das rotas da aplicação.
-    - **modules**: Módulos específicos da aplicação.
-      - **login**: Módulo de login.
-        - **form-login**: Componente de formulário de login.
-    - **shared**: Módulos e componentes compartilhados.
-      - **components**: Componentes compartilhados como header e footer.
-    - **core**: Serviços e interceptores principais.
-      - **services**: Serviços como AuthService.
-      - **interceptors**: Interceptores como CsrfInterceptor.
-      - **guards**: Guards como AuthGuard.
-  - **assets**: Contém os arquivos estáticos como imagens e estilos globais.
-  - **styles.scss**: Arquivo principal de estilos.
+
 
 - **backend**: Contém o código fonte do backend da aplicação.
   - **src**: Contém o código fonte da aplicação.
