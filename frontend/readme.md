@@ -1,83 +1,69 @@
-# SelvaSYS Frontend
+# React + TypeScript + Vite
 
-Este é o projeto frontend do SelvaSYS, uma aplicação web desenvolvida com Angular.
+This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
-## Estrutura do Projeto
+Currently, two official plugins are available:
 
-A estrutura do projeto é organizada da seguinte forma:
+- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
+- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
 
-- **src/app**: Contém os componentes principais da aplicação.
-  - **app.component.ts**: Componente principal da aplicação.
-  - **app.module.ts**: Módulo principal da aplicação.
-  - **app-routing.module.ts**: Configuração das rotas da aplicação.
-  - **modules**: Módulos específicos da aplicação.
-    - **login**: Módulo de login.
-      - **form-login**: Componente de formulário de login.
-  - **shared**: Módulos e componentes compartilhados.
-    - **components**: Componentes compartilhados como header e footer.
-  - **core**: Serviços e interceptores principais.
-    - **services**: Serviços como AuthService.
-    - **interceptors**: Interceptores como CsrfInterceptor.
-    - **guards**: Guards como AuthGuard.
+## Expanding the ESLint configuration
 
-## Dependências
+If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
 
-As principais dependências do projeto incluem:
+```js
+export default defineConfig([
+  globalIgnores(['dist']),
+  {
+    files: ['**/*.{ts,tsx}'],
+    extends: [
+      // Other configs...
 
-- Angular
-- Axios
-- RxJS
+      // Remove tseslint.configs.recommended and replace with this
+      tseslint.configs.recommendedTypeChecked,
+      // Alternatively, use this for stricter rules
+      tseslint.configs.strictTypeChecked,
+      // Optionally, add this for stylistic rules
+      tseslint.configs.stylisticTypeChecked,
 
-## Scripts Disponíveis
+      // Other configs...
+    ],
+    languageOptions: {
+      parserOptions: {
+        project: ['./tsconfig.node.json', './tsconfig.app.json'],
+        tsconfigRootDir: import.meta.dirname,
+      },
+      // other options...
+    },
+  },
+])
+```
 
-No arquivo `package.json`, os seguintes scripts estão disponíveis:
+You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
 
-- `start`: Inicia a aplicação em modo de desenvolvimento.
-- `build`: Compila a aplicação para produção.
-- `test`: Executa os testes unitários.
+```js
+// eslint.config.js
+import reactX from 'eslint-plugin-react-x'
+import reactDom from 'eslint-plugin-react-dom'
 
-## Configurações do VSCode
-
-O projeto inclui configurações específicas para o VSCode:
-
-- **extensions.json**: Recomendações de extensões.
-- **launch.json**: Configurações de lançamento para depuração.
-- **tasks.json**: Tarefas automatizadas.
-
-## Estilos
-
-Os estilos são definidos utilizando SCSS e estão localizados em `src/styles.scss` e nos arquivos de estilo específicos dos componentes.
-
-## Configuração do TypeScript
-
-As configurações do TypeScript estão definidas nos arquivos `tsconfig.json`, `tsconfig.app.json` e `tsconfig.spec.json`.
-
-## EditorConfig
-
-O projeto inclui um arquivo `.editorconfig` para manter a consistência de estilo de código entre diferentes editores.
-
-## Gitignore
-
-O arquivo `.gitignore` está configurado para ignorar arquivos e diretórios desnecessários, como `node_modules` e arquivos de log.
-
-## Como Executar
-
-Para executar o projeto localmente, siga os passos abaixo:
-
-1. Instale as dependências:
-
-   ```bash
-   npm install
-   ```
-
-2. Inicie a aplicação:
-
-   ```bash
-   npm start
-   ```
-
-3. Acesse a aplicação em `http://localhost:4200`.
-
-## Autor
-
-Desenvolvido por Edilson Segundo.
+export default defineConfig([
+  globalIgnores(['dist']),
+  {
+    files: ['**/*.{ts,tsx}'],
+    extends: [
+      // Other configs...
+      // Enable lint rules for React
+      reactX.configs['recommended-typescript'],
+      // Enable lint rules for React DOM
+      reactDom.configs.recommended,
+    ],
+    languageOptions: {
+      parserOptions: {
+        project: ['./tsconfig.node.json', './tsconfig.app.json'],
+        tsconfigRootDir: import.meta.dirname,
+      },
+      // other options...
+    },
+  },
+])
+```
