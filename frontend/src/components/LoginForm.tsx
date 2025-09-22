@@ -1,3 +1,4 @@
+import Button from "./Button";
 import InputField from "./InputField";
 
 export default function LoginForm() {
@@ -21,9 +22,7 @@ export default function LoginForm() {
             placeholder="Senha"
           />
 
-          <button className="bg-emerald-600 text-white rounded-md p-2 w-80 h-10">
-            Entrar
-          </button>
+          <Button type="submit" text="Entrar" />
         </form>
       </div>
     </section>
