@@ -91,3 +91,6 @@ frontend/*.pid.lock
 # Diagnostic reports (https://nodejs.org/api/report.html)
 backend/report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
 frontend/report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
+
+# next.js
+frontend/.next
