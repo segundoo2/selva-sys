@@ -1,6 +1,10 @@
-import axios from "axios";
+import axios from 'axios';
 
-export const api = axios.create({
-  baseURL: 'http://localhost:3001', // URL do backend NestJS
-  withCredentials: true, // Para enviar cookies junto com as requisições
-})
+const api = axios.create({
+  baseURL: 'http://localhost:3001/', // Note a barra no final
+  headers: {
+    'Content-Type': 'application/json',
+  },
+});
+
+export default api;

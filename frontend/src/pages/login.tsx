@@ -3,8 +3,6 @@ import WelcomePanel from "../components/WelcomePanel";
 import Head from "next/head";
 
 export default function LoginPage() {
-  
-
   return (
     <>
       <Head>
@@ -12,12 +10,12 @@ export default function LoginPage() {
         <meta name="description" content="Acesse sua conta SelvaSYS" />
       </Head>
 
-      <header>
+      <main>
         <div className="flex w-full h-screen flex-row">
           <WelcomePanel />
           <LoginForm />
         </div>
-      </header>
+      </main>
     </>
   );
 }
