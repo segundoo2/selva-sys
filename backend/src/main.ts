@@ -47,10 +47,10 @@ async function bootstrap() {
   );
 
   app.enableCors({
-    origin: 'http://localhost:4200', // Frontend Angular
+    origin: 'http://localhost:3000', // Frontend Next.js
     credentials: true,
   });
 
-  await app.listen(process.env.PORT ?? 3000);
+  await app.listen(process.env.PORT ?? 3001);
 }
 bootstrap();
