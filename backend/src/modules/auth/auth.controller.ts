@@ -2,6 +2,7 @@ import {
   Body,
   Controller,
   Get,
+  HttpCode,
   Post,
   Req,
   Res,
@@ -27,7 +28,9 @@ export class AuthController {
   @ApiResponse({ status: 200, description: 'Login realizado com sucesso' })
   @ApiResponse({ status: 401, description: 'Credenciais inválidas' })
   @Post('login')
+  @HttpCode(200)
   async login(@Body() authDto: AuthDto, @Res() res: Response) {
+    
     return await this.authService.login(authDto, res);
   }
 

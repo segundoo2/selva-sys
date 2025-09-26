@@ -1,17 +1,22 @@
-import { useState } from "react";
+import { use, useState } from "react";
 import Button from "./Button";
 import InputField from "./InputField";
 import api from "../utils/api";
 import Footer from "./Footer";
+import { redirect } from "next/navigation";
+import { useRouter } from "next/router";
 
 export default function LoginForm() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const router = useRouter();
 
   const handleLogin = async (email: string, password: string) => {
     try {
       const response = await api.post("auth/login", { email, password });
-      return response.data;
+      if(response.status === 200) {
+        router.push('/dashboard');
+      }
     } catch (error: any) {
       // Debug completo
       console.log("Erro completo:", error);

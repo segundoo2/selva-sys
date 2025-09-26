@@ -8,6 +8,7 @@ export default function LoginPage() {
       <Head>
         <title>Login — SelvaSYS</title>
         <meta name="description" content="Acesse sua conta SelvaSYS" />
+        <link rel="icon" href="/d1.svg" />
       </Head>
 
       <main>
