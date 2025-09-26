@@ -1,11 +1,13 @@
 import { usePathname } from "next/navigation";
 import ListItem from "./ListItem";
+import Head from "next/head";
 
 export default function List() {
   return (
+
      <ul className="flex flex-col gap-4 mt-10 w-full text-emerald-100">
         <ListItem text="Dashboard" href="/dashboard" />
-        <ListItem text="Usuários" href="/usuarios" />
+        <ListItem text="Usuários" href="/users" />
         <ListItem text="Membros" href="/membros" />
         <ListItem text="Unidades" href="/unidades" />
         <ListItem text="Finanças" href="/financas" />
