@@ -5,7 +5,7 @@ export default function Nav() {
     <nav className="bg-emerald-800 w-72 h-full flex flex-col items-center">
       <div className="flex pt-5 gap-1">
         <img
-          src="d1.svg"
+          src="/d1.svg"
           alt="Emblema d1 do clube de desbravadores"
           className="w-10 h-10"
         />
