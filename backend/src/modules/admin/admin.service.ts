@@ -4,6 +4,7 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update.dto';
 import * as bcrypt from 'bcrypt';
 import { ResetPasswordDto } from './dto/resetPassword.dto';
+
 @Injectable()
 export class AdminService {
   constructor(private readonly adminRepository: AdminRepository) {}
@@ -26,7 +27,14 @@ export class AdminService {
 
   async updateUser(id: string, updateUserDto: UpdateUserDto) {
     try {
-      updateUserDto.password = await bcrypt.hash(updateUserDto.password, 10);
+      // Só faz hash se a senha foi enviada e não está vazia
+      if (updateUserDto.password && updateUserDto.password.trim()) {
+        updateUserDto.password = await bcrypt.hash(updateUserDto.password, 10);
+      } else {
+        // Remove a senha do DTO se não foi enviada
+        delete updateUserDto.password;
+      }
+      
       return this.adminRepository.updateUser(id, updateUserDto);
     } catch (error) {
       throw error;
