@@ -1,16 +1,12 @@
-// GenericTable.tsx
+// components/GenericTable.tsx
 import { ReactNode } from "react";
 
-// T agora é um objeto genérico.
 type GenericTableProps<T extends object> = {
   data: T[];
   columnsNames?: string[]; 
   columnsKeys?: (keyof T)[]; 
   actions?: (item: T) => ReactNode; 
-  
-  // Define explicitamente qual chave do objeto T será usada como ID.
-  // Se não for fornecido, a primeira chave visível será usada como fallback.
-  idKey?: keyof T; 
+  idKey?: keyof T; // Chave usada para o React 'key' (ex: "matricula")
 };
 
 export function GenericTable<T extends object>({
@@ -32,10 +28,7 @@ export function GenericTable<T extends object>({
       );
   }
 
-  // --- CORREÇÃO APLICADA AQUI ---
-  // A chave de ID final é a passada pelo usuário, ou a primeira chave do objeto como fallback.
-  // Usamos 'as keyof T' no primeiro elemento de keys para garantir a tipagem,
-  // pois a inferência de tipo já confirmou que 'keys' são chaves de T.
+  // Define a chave de ID final (prioriza idKey, senão a primeira chave de dados)
   const finalIdKey: keyof T = idKey || keys[0];
 
   return (
@@ -61,8 +54,6 @@ export function GenericTable<T extends object>({
 
           <tbody className="divide-y divide-gray-200">
             {data.map((item, index) => (
-              // Usamos a chave 'finalIdKey' para garantir uma 'key' única para o React.
-              // Usamos String() para garantir que a key seja uma string válida.
               <tr key={String(item[finalIdKey]) || index} className="hover:bg-emerald-50"> 
                 {keys.map((key) => (
                   <td

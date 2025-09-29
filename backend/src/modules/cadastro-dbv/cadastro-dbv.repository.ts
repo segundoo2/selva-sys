@@ -33,7 +33,7 @@ export class CadastroDbvRepository {
   }
 
   async deleteDbvByMatricula(matricula: number) {
-    return await this.prisma.write.cadastroDbv.delete({
+    return await this.prisma.delete.cadastroDbv.delete({
       where: { matricula },
     });
   }

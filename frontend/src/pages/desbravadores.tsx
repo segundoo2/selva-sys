@@ -98,8 +98,13 @@ export default function DesbravadoresPage({
   };
 
   useEffect(() => {
-    fetchDesbravadores();
-  }, []);
+    // Usar initialDesbravadores do SSR ou re-fetch se necessário
+    if (initialDesbravadores && initialDesbravadores.length > 0) {
+        setDesbravadores(initialDesbravadores);
+    } else {
+        fetchDesbravadores();
+    }
+  }, [initialDesbravadores]);
 
   const filtered = useMemo(() => {
     const qq = q.trim().toLowerCase();
@@ -196,13 +201,23 @@ export default function DesbravadoresPage({
     setConfirmOpen(true);
   };
 
+  // CORREÇÃO: Atualização do estado local após a exclusão
   const confirmDelete = async () => {
     if (!candidateToDelete) return setConfirmOpen(false);
-    setConfirmOpen(false);
+    
+    const deletedDbv = candidateToDelete; 
+    setConfirmOpen(false); 
+
     try {
-      await api.delete(`/cadastro-dbv/${candidateToDelete.matricula}`);
-      await fetchDesbravadores();
-      setModalMessage("Desbravador excluído com sucesso!");
+      await api.delete(`/cadastro-dbv/${deletedDbv.matricula}`);
+      
+      // Atualização otimizada do estado: Filtra o item deletado
+      setDesbravadores(prevList => 
+          prevList.filter(d => d.matricula !== deletedDbv.matricula)
+      );
+      
+      setModalMessage(`Desbravador ${deletedDbv.nome} excluído com sucesso!`);
+      
     } catch (err: any) {
       setModalError(
         err?.response?.data?.message || "Erro ao excluir desbravador"
@@ -212,6 +227,7 @@ export default function DesbravadoresPage({
     }
   };
 
+  // CORREÇÃO: Atualização do estado local após o submit (edição/criação)
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setModalMessage("");
@@ -239,15 +255,30 @@ export default function DesbravadoresPage({
     };
 
     try {
+      let res;
       if (isEditing && editingDesbravador) {
-        await api.put(`/cadastro-dbv/${editingDesbravador.matricula}`, payload);
+        res = await api.put(`/cadastro-dbv/${editingDesbravador.matricula}`, payload);
         setModalMessage("Desbravador atualizado com sucesso!");
       } else {
-        await api.post("/cadastro-dbv", payload);
+        res = await api.post("/cadastro-dbv", payload);
         setModalMessage("Desbravador cadastrado com sucesso!");
       }
-      await fetchDesbravadores();
+      
+      const newOrUpdatedDbv = res.data as Desbravador; 
+      
+      // Atualiza o estado local com o novo/editado item
+      setDesbravadores(prevList => {
+          if (isEditing) {
+              return prevList.map(d => 
+                  d.matricula === newOrUpdatedDbv.matricula ? newOrUpdatedDbv : d
+              );
+          } else {
+              return [...prevList, newOrUpdatedDbv];
+          }
+      });
+      
       setTimeout(() => closeModal(), 1500);
+      
     } catch (err: any) {
       const be = err?.response?.data?.message;
       setModalError(

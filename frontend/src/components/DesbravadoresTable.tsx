@@ -2,7 +2,6 @@
 import { Edit, Trash2 } from "lucide-react";
 import React from "react";
 import { Desbravador } from "../pages/desbravadores";
-// 1. Importa o GenericTable (Assumindo que está em um caminho acessível, como './GenericTable')
 import { GenericTable } from "./GenericTable"; 
 
 interface DesbravadoresTableProps {
@@ -17,8 +16,7 @@ export default function DesbravadoresTable({
   onDelete,
 }: DesbravadoresTableProps) {
 
-  // O GenericTable agora lida com o estado de dados vazios,
-  // mas vamos manter a verificação para fins de clareza (embora seja opcional).
+  // O GenericTable lida com o estado de dados vazios, mas mantemos a verificação para clareza
   if (!desbravadores || desbravadores.length === 0) {
     return (
       <div className="bg-white rounded-lg shadow p-8 text-center">
@@ -27,7 +25,7 @@ export default function DesbravadoresTable({
     );
   }
 
-  // 2. Define a ordem das chaves do objeto Desbravador que serão exibidas
+  // Colunas selecionadas para melhor visualização na tabela (mais as chaves de endereço)
   const columnsKeys: (keyof Desbravador)[] = [
     "matricula",
     "nome",
@@ -37,9 +35,10 @@ export default function DesbravadoresTable({
     "unidade",
     "nomeResponsavel",
     "telefoneResponsavel",
+    "cidade",
+    "estado",
   ];
 
-  // 3. Define os nomes dos cabeçalhos na mesma ordem
   const columnsNames = [
     "Matrícula",
     "Nome",
@@ -48,10 +47,12 @@ export default function DesbravadoresTable({
     "Cargo",
     "Unidade",
     "Responsável",
-    "Telefone",
+    "Telefone Resp.",
+    "Cidade",
+    "Estado",
   ];
   
-  // 4. Define o JSX para a coluna 'Ações'
+  // Renderizador para a coluna 'Ações'
   const actionsRenderer = (desbravador: Desbravador) => (
     <div className="flex justify-center gap-2">
       <button
@@ -71,14 +72,14 @@ export default function DesbravadoresTable({
     </div>
   );
 
-  // 5. Renderiza o GenericTable
   return (
     <div className="overflow-x-auto">
-      <GenericTable
+      <GenericTable<Desbravador>
         data={desbravadores}
         columnsKeys={columnsKeys}
         columnsNames={columnsNames}
         actions={actionsRenderer}
+        idKey="matricula" // Define a chave de identificação
       />
     </div>
   );
