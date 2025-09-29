@@ -31,7 +31,7 @@ export default function SelectField({
   required = false,
   disabled = false,
   leftIcon,
-  width = "w-80",
+  width = "w-full",
 }: SelectFieldProps) {
   const baseClass =
     className ??
