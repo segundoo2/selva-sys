@@ -55,7 +55,11 @@ export default function UsersPage({ users: initialUsers }: { users: User[] }) {
   const filtered = useMemo(() => {
     const qq = q.trim().toLowerCase();
     if (!qq) return users;
-    return users.filter(u => (u.name ?? "").toLowerCase().includes(qq) || (u.email ?? "").toLowerCase().includes(qq) || (u.role ?? "").toLowerCase().includes(qq));
+    return users.filter(u =>
+      (u.name ?? "").toLowerCase().includes(qq) ||
+      (u.email ?? "").toLowerCase().includes(qq) ||
+      (u.role ?? "").toLowerCase().includes(qq)
+    );
   }, [q, users]);
 
   const validateField = (field: string, value: string) => {
@@ -210,7 +214,13 @@ export default function UsersPage({ users: initialUsers }: { users: User[] }) {
         </div>
       </div>
 
-      <UsersTable users={filtered} onEdit={openEdit} onDelete={tryDelete} />
+      {filtered.length === 0 ? (
+        <div className="bg-white rounded-lg shadow p-8 text-center">
+          <p className="text-gray-500 text-lg">Nenhum usuário cadastrado</p>
+        </div>
+      ) : (
+        <UsersTable users={filtered} onEdit={openEdit} onDelete={tryDelete} />
+      )}
 
       <Modal open={isModalOpen} onClose={closeModal} title={isEditing ? "Editar Usuário" : "Cadastrar Usuário"} size="md" footer={
         <div className="flex justify-end gap-4">

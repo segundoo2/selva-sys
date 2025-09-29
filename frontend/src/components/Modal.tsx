@@ -3,7 +3,7 @@ import React, { useEffect, useRef } from "react";
 import { createPortal } from "react-dom";
 import { X } from "lucide-react";
 
-type ModalSize = "sm" | "md" | "lg" | "xl";
+type ModalSize = "sm" | "md" | "lg" | "xl" | "scroll-lg"; // Adiciona o novo tamanho 'scroll-lg' para diferenciar
 
 type ModalProps = {
   open: boolean;
@@ -21,8 +21,10 @@ type ModalProps = {
 const SIZE_CLASSES: Record<ModalSize, string> = {
   sm: "max-w-sm",
   md: "max-w-md",
-  lg: "max-w-lg",
+  lg: "max-w-lg", // Mantém o 'lg' original
   xl: "max-w-xl",
+  // Nova classe para um modal com largura 'lg' e foco em rolagem vertical
+  "scroll-lg": "max-w-3xl", // Aumenta a largura (e.g., para 3xl)
 };
 
 export default function Modal({
@@ -88,9 +90,15 @@ export default function Modal({
   }, [open]);
 
   if (!rootRef.current || !open) return null;
+  
+  // Define se o modal terá altura máxima e scroll (para o novo tamanho 'scroll-lg' e o original 'lg')
+  // Usei 'scroll-lg' para não quebrar a lógica do 'lg' original.
+  const isScrollable = size === "scroll-lg";
 
   const modalContent = (
-    <div className="fixed inset-0 z-50 flex items-center justify-center" aria-hidden={!open}>
+    // Aplica flex-col no container para centralizar o painel e permitir que ele se encolha
+    // Adiciona max-h-full e overflow-y-auto no container, para que o painel interno possa rolar
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4" aria-hidden={!open}>
       {/* overlay */}
       <div
         className="fixed inset-0 bg-black/50"
@@ -100,16 +108,17 @@ export default function Modal({
         }}
       />
 
-      {/* painel */}
+      {/* painel wrapper com altura máxima e rolagem. O max-h-[90vh] garante que ele não ocupe 100% da viewport. */}
       <div
         role="dialog"
         aria-modal="true"
         aria-label={ariaLabel ?? (typeof title === "string" ? title : "modal")}
-        className={`relative z-10 w-full ${SIZE_CLASSES[size]} mx-4 ${className}`}
+        // Se 'scroll-lg', adiciona classes para altura máxima e rolagem
+        className={`relative z-10 w-full mx-4 ${SIZE_CLASSES[size]} ${isScrollable ? "max-h-[90vh] overflow-y-auto" : ""} ${className}`}
       >
-        <div className="bg-white text-emerald-800 rounded-lg shadow-lg overflow-hidden">
+        <div className="bg-white text-emerald-800 rounded-lg shadow-lg overflow-hidden flex flex-col">
           {title && (
-            <div className="flex items-center justify-between p-4">
+            <div className="flex items-center justify-between p-4 flex-shrink-0 border-b border-gray-200"> {/* flex-shrink-0 impede que o header se encolha */}
               <div className="text-lg font-semibold">{title}</div>
               <button
                 type={type}
@@ -121,10 +130,13 @@ export default function Modal({
               </button>
             </div>
           )}
+          
+          {/* Conteúdo rolável. flex-grow e overflow-y-auto permitem que esta div cresça e role se necessário. */}
+          <div className={`p-6 ${isScrollable ? "flex-grow overflow-y-auto" : ""}`}>
+            {children}
+          </div>
 
-          <div className="p-6">{children}</div>
-
-          {footer && <div className="px-6 py-4">{footer}</div>}
+          {footer && <div className="px-6 py-4 flex-shrink-0 border-t border-gray-200">{footer}</div>} {/* flex-shrink-0 impede que o footer se encolha */}
         </div>
       </div>
     </div>

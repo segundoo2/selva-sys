@@ -1,9 +1,12 @@
+// Nav.tsx (CORRIGIDO)
+
 import List from "./List";
 
 export default function Nav() {
   return (
-    <nav className="bg-emerald-800 w-72 h-full flex flex-col items-center">
-      <div className="flex pt-5 gap-1">
+    // REMOVEMOS items-center
+    <nav className="bg-emerald-800 w-72 h-auto flex flex-col"> 
+      <div className="flex pt-5 gap-1 items-center justify-center"> {/* Centralizamos o logo/título */}
         <img
           src="/d1.svg"
           alt="Emblema d1 do clube de desbravadores"
@@ -12,7 +15,9 @@ export default function Nav() {
         <h1 className="font-bold text-3xl text-emerald-100">SelvaSYS</h1>
       </div>
 
-     <List/>
+     <div className="mt-10 h-full w-full"> 
+         <List/> 
+     </div>
     </nav>
   );
 }

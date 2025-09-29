@@ -6,7 +6,7 @@ import { PrismaService } from '../prisma/prisma.service';
 export class CadastroDbvRepository {
   constructor(private readonly prisma: PrismaService) {}
 
-  async createDbv(createCadastroDbvDto: CreateCadastroDbvDto) {
+  async createDbv(createCadastroDbvDto: { matricula: number } & CreateCadastroDbvDto) {
     if (!createCadastroDbvDto) {
       throw new BadRequestException('Dados inválidos.');
     }

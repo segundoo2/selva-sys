@@ -1,18 +1,13 @@
-import { IsInt, IsNegative, IsNotEmpty, IsOptional, IsString, Min } from "class-validator";
+import { IsInt, IsNegative, IsNotEmpty, IsOptional, IsPositive, IsString, Min } from "class-validator";
 
 export default class CreateCadastroDbvDto {
-
-  @IsInt({ message: 'Matrícula é obrigatória.' })
-  @IsNotEmpty({ message: 'Matrícula não pode ser vazia.' })
-  matricula:           number;
-
   @IsString({ message: 'Nome é obrigatório.' })
   @IsNotEmpty({ message: 'Nome não pode ser vazio.' })
   nome:                string;
 
   @IsInt({ message: 'Idade é obrigatória.' })
   @IsNotEmpty({ message: 'Idade não pode ser vazia.' })
-  @Min(9, { message: 'Idade deve ser maior ou igual a 9.' })
+  @Min(10, { message: 'Idade deve ser maior ou igual a 10 anos.' })
   idade:               number;
 
   @IsString({ message: 'CPF é obrigatório.' })
@@ -48,7 +43,7 @@ export default class CreateCadastroDbvDto {
 
   @IsInt({ message: 'Número é obrigatório.' })
   @IsNotEmpty({ message: 'Número não pode ser vazio.' })
-  @IsNegative({ message: 'Número deve ser positivo.' })
+  @IsPositive({ message: 'Número deve ser positivo.' })
   numero:              number;
 
   @IsString({ message: 'Bairro é obrigatório.' })

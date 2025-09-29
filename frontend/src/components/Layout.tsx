@@ -1,6 +1,6 @@
 import Head from "next/head";
 import { ReactNode } from "react";
-import Nav from "./Nav";
+import Nav from "./Nav"; 
 
 type LayoutProps = {
   children: ReactNode;
@@ -19,26 +19,37 @@ export default function Layout({ children, title, description }: LayoutProps) {
 
       <div className="
       bg-emerald-100 
-      h-screen 
+      min-h-screen 
       w-screen 
-      m-auto 
+      p-5 
       flex 
-      items-center 
-      justify-center">
+      justify-center 
+      items-start 
+      ">
         <section
           className="
-            flex items-start 
-            justify-start 
-            w-5xl 
-            h-10/12 
+            flex
+            w-full 
+            max-w-7xl
+            min-h-[calc(100vh-40px)] 
+            max-h-[calc(100vh-40px)]
             bg-white 
             rounded-lg 
             shadow-lg 
-            overflow-hidden"
+            overflow-hidden 
+          "
         >
+          {/* 1. Navegação Estática */}
           <Nav />
 
-          <main className="my-5 mx-5 gap-6 w-full h-full">
+          {/* 2. Área de Conteúdo Principal (CHAVE: Garante a largura total disponível) */}
+          <main className="
+            w-full // CHAVE: Ocupa 100% da largura restante
+            p-6 
+            overflow-y-auto 
+            h-full
+            min-w-0 // Essencial para evitar o vazamento horizontal em tabelas
+          ">
             {children}
           </main>
         </section>

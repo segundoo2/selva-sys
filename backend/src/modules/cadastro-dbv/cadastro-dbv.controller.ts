@@ -9,8 +9,8 @@ import { RolesGuard } from '../auth/guards/roles.guard';
 export class CadastroDbvController {
   constructor(private readonly cadastroDbvService: CadastroDbvService) {}
 
-  @Roles('admin', 'diretor', 'secretario')
-  @UseGuards(CsrfGuard, RolesGuard)
+  // @Roles('admin', 'diretor', 'secretario')
+  // @UseGuards(CsrfGuard, RolesGuard)
   @Post()
   async createDbv(@Body() createCadastroDbvDto: CreateCadastroDbvDto) {
     if (!createCadastroDbvDto) {
@@ -19,26 +19,22 @@ export class CadastroDbvController {
     return this.cadastroDbvService.createDbv(createCadastroDbvDto);
   }
 
-  async findDbvByMatricula(@Param('matricula') matricula: number) {
-    return this.cadastroDbvService.findDbvByMatricula(matricula);
-  }
-
-  @Roles('admin', 'diretor', 'secretario')
-  @UseGuards(CsrfGuard, RolesGuard)
+  // @Roles('admin', 'diretor', 'secretario')
+  // @UseGuards(CsrfGuard, RolesGuard)
   @Get('/all')
   async findAllDbvs() {
     return this.cadastroDbvService.findAllDbvs();
   }
 
-  @Roles('admin', 'diretor', 'secretario')
-  @UseGuards(CsrfGuard, RolesGuard)
+  // @Roles('admin', 'diretor', 'secretario')
+  // @UseGuards(CsrfGuard, RolesGuard)
   @Put(':matricula')
   async updateDbvByMatricula(@Param('matricula') matricula: number, @Body() updateCadastroDbvDto: CreateCadastroDbvDto) {
     return this.cadastroDbvService.updateDbvByMatricula(matricula, updateCadastroDbvDto);
   }
 
-  @Roles('admin', 'diretor', 'secretario')
-  @UseGuards(CsrfGuard, RolesGuard)
+  // @Roles('admin', 'diretor', 'secretario')
+  // @UseGuards(CsrfGuard, RolesGuard)
   @Delete(':matricula')
   async deleteDbvByMatricula(@Param('matricula') matricula: number) {
     return this.cadastroDbvService.deleteDbvByMatricula(matricula);
