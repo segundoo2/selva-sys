@@ -1,5 +1,5 @@
 // pages/desbravadores.tsx
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react"; // <-- Importação do useCallback
 import { Search } from "lucide-react";
 import Layout from "../components/Layout";
 import { Title } from "../components/Title";
@@ -11,6 +11,7 @@ import ConfirmModal from "../components/ConfirmModal";
 import api from "../utils/api";
 import DesbravadorForm from "../components/DesbravadorForm";
 import DesbravadoresTable from "../components/DesbravadoresTable";
+import SearchField from "../components/SearchField";
 
 // --- Tipo completo usado em toda a página e tabela ---
 export interface Desbravador {
@@ -34,7 +35,7 @@ export interface Desbravador {
   observacao?: string;
 }
 
-// --- Hook debounce ---
+// --- Hook debounce (Permanece inalterado) ---
 function useDebounce<T>(value: T, delay = 300) {
   const [v, setV] = useState<T>(value);
   useEffect(() => {
@@ -98,7 +99,6 @@ export default function DesbravadoresPage({
   };
 
   useEffect(() => {
-    // Usar initialDesbravadores do SSR ou re-fetch se necessário
     if (initialDesbravadores && initialDesbravadores.length > 0) {
         setDesbravadores(initialDesbravadores);
     } else {
@@ -119,14 +119,30 @@ export default function DesbravadoresPage({
     );
   }, [q, desbravadores]);
 
-  const handleChange = (field: string, value: any) => {
+  // Handler para alteração de UM campo (usado nos inputs normais)
+  // Usamos useCallback para garantir que a função seja estável e não cause re-renderizações desnecessárias
+  const handleChange = useCallback((field: string, value: any) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
     setFieldErrors((prev) => {
       const next = { ...prev };
       delete next[field];
       return next;
     });
-  };
+  }, []);
+
+  // NOVO HANDLER: Para alteração de MÚLTIPLOS campos (usado no autopreenchimento de CEP)
+  // Isso garante que todas as atualizações de endereço ocorram em um único ciclo de renderização.
+  const handleBatchChange = useCallback((updates: Partial<Desbravador>) => {
+    setFormData((prev) => ({ ...prev, ...updates }));
+    setFieldErrors((prev) => {
+      const next = { ...prev };
+      // Limpa os erros dos campos que foram atualizados em lote
+      Object.keys(updates).forEach(field => {
+          delete next[field];
+      });
+      return next;
+    });
+  }, []);
 
   const openCreate = () => {
     setIsModalOpen(true);
@@ -311,15 +327,11 @@ export default function DesbravadoresPage({
       </section>
 
       <section className="flex justify-start mb-4">
-        <div className="w-64">
-          <InputField
-            type="text"
-            placeholder="Pesquisar (nome, CPF, cargo...)"
+        <SearchField
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            icon={<Search size={16} className="text-emerald-600" />}
-          />
-        </div>
+            placeholder="Pesquisar (nome, CPF, cargo...)"
+        />
       </section>
 
       <DesbravadoresTable
@@ -361,6 +373,7 @@ export default function DesbravadoresPage({
             formData={formData}
             fieldErrors={fieldErrors}
             handleChange={handleChange}
+            handleBatchChange={handleBatchChange} // <-- NOVO PROP PASSADO AQUI
             isEditing={isEditing}
           />
         </GenericForm>

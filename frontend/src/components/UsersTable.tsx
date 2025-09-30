@@ -16,6 +16,8 @@ export default function UsersTable({ users, onEdit, onDelete }: Props) {
       data={users}
       columnsNames={["Nome", "Email", "Nível de Acesso"]}
       columnsKeys={["name", "email", "role"]}
+      // Como o GenericTable não tem uma prop 'idKey' explícita aqui,
+      // ele usará a chave 'id' (assumindo que User tem 'id'), o que é correto para usuários.
       actions={(user) => (
         <div className="flex gap-4 justify-center">
           <button className="text-emerald-600 hover:text-emerald-800" onClick={() => onEdit(user)} title="Editar">

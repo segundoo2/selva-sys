@@ -1,24 +1,118 @@
+// components/DesbravadorForm.tsx
 import {
   User,
-  Hash,
   IdCard,
   Briefcase,
   Users,
   Phone,
   MapPin,
-  FileText,
+  Loader,
 } from "lucide-react";
-import React from "react";
+// IMPORTANTE: Adicionando useState, useEffect e useCallback
+import React, { useEffect, useState, useCallback } from "react"; 
 import InputField from "./InputField";
 import Message from "./Message";
 import SelectField from "./SelectField";
 
+// IMPORTAÇÃO DAS FUNÇÕES DE MÁSCARA E BUSCA
+import { maskCPF, maskPhone, maskCEP } from "../utils/masks";
+import { fetchAddressByCep } from "../utils/cep"; 
+
 export default function DesbravadorForm({
   formData,
   fieldErrors,
-  handleChange,
+  // Assumimos que 'handleChange' é estável (vem de um useCallback no pai)
+  handleChange, 
   isEditing,
 }: any) {
+  
+  // ESTADOS LOCAIS PARA BUSCA DE CEP
+  const [cepError, setCepError] = useState<string | null>(null);
+  const [isLoadingCep, setIsLoadingCep] = useState(false);
+  
+  // Estado local para rastrear o valor do CEP para o Debounce
+  const [debouncedCep, setDebouncedCep] = useState(formData.cep || ""); 
+  
+  // Sincroniza o estado local 'debouncedCep' com o estado global 'formData' ao carregar/editar
+  useEffect(() => {
+    setDebouncedCep(formData.cep || "");
+  }, [formData.cep]);
+
+
+  // Handler para MÁSCARAS (CPF e Telefone) - Estável com useCallback
+  const handleMaskedChange = useCallback((field: string, maskFn: (v: string) => string) => (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const maskedValue = maskFn(e.target.value);
+    handleChange(field, maskedValue);
+  }, [handleChange]); 
+  
+
+  // Handler específico para o campo CEP - Estável com useCallback
+  const handleCepChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    const maskedValue = maskCEP(e.target.value);
+    
+    // 1. Atualiza o estado global (formData)
+    handleChange("cep", maskedValue);
+    
+    // 2. ATUALIZA O ESTADO LOCAL de debounce
+    setDebouncedCep(maskedValue);
+
+    // 3. Limpa erro e carregamento *imediatamente* ao digitar
+    if (cepError) setCepError(null);
+    if (isLoadingCep) setIsLoadingCep(false);
+  }, [handleChange, cepError, isLoadingCep]);
+
+
+  // =======================================================================
+  // EFEITO COM DEBOUNCE: Monitora o estado 'debouncedCep'
+  // =======================================================================
+  useEffect(() => {
+    const cleanedCep = debouncedCep.replace(/\D/g, "");
+
+    // Só prosseguimos se o CEP tiver exatamente 8 dígitos
+    if (cleanedCep.length !== 8) {
+        return;
+    }
+    
+    // Define o tempo de espera (ex: 500ms)
+    const delaySearch = setTimeout(() => {
+        const loadAddress = async () => {
+            setIsLoadingCep(true);
+            
+            const addressData = await fetchAddressByCep(cleanedCep);
+
+            setIsLoadingCep(false); // Finaliza o carregamento
+
+            if (addressData) {
+                // Sucesso: Preenche os campos
+                handleChange("rua", addressData.logradouro);
+                handleChange("bairro", addressData.bairro);
+                handleChange("cidade", addressData.localidade);
+                handleChange("estado", addressData.uf);
+            } else {
+                // Falha: Exibe erro dinâmico
+                setCepError("CEP não encontrado ou inválido.");
+                
+                // Limpar campos do endereço
+                handleChange("rua", "");
+                handleChange("bairro", "");
+                handleChange("cidade", "");
+                handleChange("estado", "");
+            }
+        };
+        loadAddress();
+    }, 500); // 500 milissegundos de debounce
+
+    // Função de limpeza: cancela o timer se o usuário digitar novamente
+    return () => clearTimeout(delaySearch);
+    
+  }, [debouncedCep, handleChange]); 
+
+    
+  // VARIÁVEL AUXILIAR: Verifica se o CEP digitado (limpo) tem 8 dígitos
+  const isCepComplete = (formData.cep?.replace(/\D/g, "") || "").length === 8;
+
   const cargos = [
     { value: "Desbravador", label: "Desbravador" },
     { value: "Diretor", label: "Diretor" },
@@ -42,6 +136,7 @@ export default function DesbravadorForm({
   ];
 
   const estados = [{ value: "RN", label: "Rio Grande do Norte" }];
+
 
   return (
     <div className="w-full flex justify-center px-4">
@@ -90,13 +185,13 @@ export default function DesbravadorForm({
               )}
             </div>
 
-            {/* CPF */}
+            {/* CPF - COM MÁSCARA */}
             <div>
               <InputField
                 type="text"
                 placeholder="CPF"
                 value={formData.cpf || ""}
-                onChange={(e) => handleChange("cpf", e.target.value)}
+                onChange={handleMaskedChange("cpf", maskCPF)} 
                 required
                 icon={<IdCard size={16} />}
               />
@@ -109,13 +204,13 @@ export default function DesbravadorForm({
               )}
             </div>
 
-            {/* RG */}
+            {/* RG - SEM MÁSCARA */}
             <div>
               <InputField
                 type="text"
                 placeholder="RG"
                 value={formData.rg || ""}
-                onChange={(e) => handleChange("rg", e.target.value)}
+                onChange={(e) => handleChange("rg", e.target.value)} 
                 required
                 icon={<IdCard size={16} />}
               />
@@ -205,15 +300,13 @@ export default function DesbravadorForm({
               )}
             </div>
 
-            {/* Telefone Responsável */}
+            {/* Telefone Responsável - COM MÁSCARA */}
             <div>
               <InputField
                 type="text"
                 placeholder="Telefone do Responsável"
                 value={formData.telefoneResponsavel || ""}
-                onChange={(e) =>
-                  handleChange("telefoneResponsavel", e.target.value)
-                }
+                onChange={handleMaskedChange("telefoneResponsavel", maskPhone)} 
                 required
                 icon={<Phone size={16} />}
               />
@@ -227,33 +320,42 @@ export default function DesbravadorForm({
             </div>
           </div>
         </div>
-
+        
         {/* Seção: Endereço */}
         <div className="border-b pb-4">
           <h3 className="text-lg font-semibold text-emerald-800 mb-4">
             Endereço
           </h3>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {/* CEP */}
+            {/* CEP - COM CORREÇÃO FINAL NO ÍCONE */}
             <div>
               <InputField
                 type="text"
                 placeholder="CEP"
                 value={formData.cep || ""}
-                onChange={(e) => handleChange("cep", e.target.value)}
+                onChange={handleCepChange} 
                 required
-                icon={<MapPin size={16} />}
+                // =======================================================================
+                // CORREÇÃO FINAL: O Loader só aparece se (A) estiver carregando E (B) o CEP estiver completo
+                // =======================================================================
+                icon={
+                    (isLoadingCep && isCepComplete) 
+                        ? <Loader size={16} className="animate-spin text-emerald-600" /> 
+                        : <MapPin size={16} />
+                }
+                disabled={isLoadingCep} 
               />
-              {fieldErrors.cep && (
+              {/* Exibe erro dinâmico da busca de CEP */}
+              {(fieldErrors.cep || cepError) && (
                 <Message
-                  message={fieldErrors.cep}
+                  message={fieldErrors.cep || cepError}
                   variant="error"
                   className="text-red-500 text-sm mt-1"
                 />
               )}
             </div>
 
-            {/* Rua */}
+            {/* Rua - Preenchimento automático */}
             <div>
               <InputField
                 type="text"
@@ -291,7 +393,7 @@ export default function DesbravadorForm({
               )}
             </div>
 
-            {/* Bairro */}
+            {/* Bairro - Preenchimento automático */}
             <div>
               <InputField
                 type="text"
@@ -310,7 +412,7 @@ export default function DesbravadorForm({
               )}
             </div>
 
-            {/* Cidade */}
+            {/* Cidade - Preenchimento automático */}
             <div>
               <InputField
                 type="text"
@@ -329,7 +431,7 @@ export default function DesbravadorForm({
               )}
             </div>
 
-            {/* Estado */}
+            {/* Estado - Preenchimento automático */}
             <div>
               <SelectField
                 value={formData.estado || ""}

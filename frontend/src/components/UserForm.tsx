@@ -1,3 +1,4 @@
+// components/UserForm.tsx (Com correção para exibir os campos na edição, tornando a mudança de senha opcional)
 import { UserIcon, EyeClosed, Eye, Lock } from "lucide-react";
 import React from "react";
 import InputField from "./InputField";
@@ -68,42 +69,42 @@ export default function UserForm({
           )}
         </div>
 
-        {/* Senha e confirmação: apenas criação */}
-        {!isEditing && (
-          <>
-            <div>
-              <InputField
+        {/* Senha e confirmação: Agora sempre visíveis, mas opcionais na edição */}
+        <div className={`mt-2 ${isEditing ? 'border-t pt-4 border-gray-200' : ''}`}>
+            {isEditing && <p className="text-sm text-gray-500 mb-2">Preencha os campos abaixo apenas se desejar alterar a senha:</p>}
+        </div>
+        
+        <div>
+            <InputField
                 type={showPassword ? "text" : "password"}
-                placeholder="Senha"
+                placeholder={isEditing ? "Nova Senha (Opcional)" : "Senha"}
                 value={formData.password || ""}
                 onChange={(e) => handleChange("password", e.target.value)}
-                required
+                required={!isEditing} // Requerido apenas na criação
                 icon={<Lock size={16} />}
                 actionIcon={showPassword ? <EyeClosed size={16} /> : <Eye size={16} />}
                 onActionClick={() => setShowPassword((s) => !s)}
-              />
-              {fieldErrors.password && (
+            />
+            {fieldErrors.password && (
                 <Message message={fieldErrors.password} variant="error" className="text-red-500 text-sm mt-1" />
-              )}
-            </div>
+            )}
+        </div>
 
-            <div>
-              <InputField
+        <div>
+            <InputField
                 type={showConfirmPassword ? "text" : "password"}
-                placeholder="Confirmar Senha"
+                placeholder={isEditing ? "Confirmar Nova Senha" : "Confirmar Senha"}
                 value={formData.confirmPassword || ""}
                 onChange={(e) => handleChange("confirmPassword", e.target.value)}
-                required
+                required={!isEditing} // Requerido apenas na criação
                 icon={<Lock size={16} />}
                 actionIcon={showConfirmPassword ? <EyeClosed size={16} /> : <Eye size={16} />}
                 onActionClick={() => setShowConfirmPassword((s) => !s)}
-              />
-              {fieldErrors.confirmPassword && (
+            />
+            {fieldErrors.confirmPassword && (
                 <Message message={fieldErrors.confirmPassword} variant="error" className="text-red-500 text-sm mt-1" />
-              )}
-            </div>
-          </>
-        )}
+            )}
+        </div>
       </div>
     </div>
   );
